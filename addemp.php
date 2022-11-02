@@ -2,7 +2,7 @@
 session_start();
 include "scripts\connect.php";
 include "layouts\layout_sidebar.php";
-include "scripts\admin-check.php";
+include "scripts\admin-check.php";qqqqqqq
 //error_reporting(E_ALL ^ E_NOTICE);
 
 ?>
