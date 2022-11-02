@@ -310,8 +310,6 @@ if (!isset($_SESSION['user_id']))
 
         <a class="nav-link" href="addemp.php"><i class="bi bi-journal-text"></i>Create New Employee Account</a>
 
-        <a class="nav-link" href="addemp.php"><i class="bi bi-journal-text"></i>Export Employee PDS</a>
-
       <!--
         <ul id="data-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
@@ -505,11 +503,6 @@ if (!isset($_SESSION['user_id']))
               <i class="bi bi-circle"></i><span>View Leave Requests</span>
             </a>
             <li>
-          <li>
-            <a href="#">
-              <i class="bi bi-circle"></i><span>File leave for Employee</span>
-            </a>
-            <li>
         </ul>
       </li>
       <!-- End Components Nav -->';
@@ -586,11 +579,6 @@ echo'
               <i class="bi bi-circle"></i><span>Step Increment</span>
             </a>
           </li>
-          <li>
-            <a href="tables-general.html">
-              <i class="bi bi-circle"></i><span>Birth Date</span>
-            </a>
-          </li>
         </ul>
         <!-- original content
         <li>
@@ -643,7 +631,7 @@ echo'
         </ul>
       </li><!-- End Charts Nav -->
       
-
+      <!-- personnel board
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse" href="#">
           <i class="bi bi-person"></i><span>Personnel Board</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -690,7 +678,7 @@ echo'
             </a>
           </li>
         </ul>
-      </li><!-- End Icons Nav -->
+      </li> -->
       <!-- start dashboard
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#dashboard-nav" data-bs-toggle="collapse" href="#">
@@ -1341,12 +1329,12 @@ if($leave_elig>0)
       <ul id="trainings-nav" class="nav-content collapse " data-bs-parent="">
             
             <li>
-              <a href="emp-add-trainings.php>
+              <a href="emp-add-training.php">
                 <i class="bi bi-circle"></i><span>Add Trainings</span>
               </a>
             <li>
             <li>
-              <a href="emp-Training-history.php>
+              <a href="#">
                 <i class="bi bi-circle"></i><span>View Training History</span>
               </a>
             <li>
