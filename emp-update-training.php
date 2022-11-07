@@ -2,22 +2,50 @@
 session_start();
 include "scripts\connect.php";
 include "layouts\layout_sidebar.php";
-
-include "scripts\admin-check.php";
 //error_reporting(E_ALL ^ E_NOTICE);
-
 ?>
 
+<?php
 
+$uid=$_GET['uid']; // get link value
+
+$sql = "select top 1 * from emp_basic where agencyid='$uid' order by id desc";
+
+if($result = sqlsrv_query($conn, $sql))
+{
+  while($row = sqlsrv_fetch_array($result))
+  {
+    $agencyid = $row['agencyid'];
+    $imagepath = $row['imagepath'];
+    $surname = $row['surname'];
+    $surname = utf8_encode($surname);
+    $suffix = $row ['suffix'];
+    $fname = $row ['firstname'];
+    $mname = $row ['middlename'];
+    $dob = $row ['dob'];
+    $pob = $row ['pob'];
+    $gender = $row ['gender'];
+    $civil = $row ['civil'];
+    $citizenship = $row ['citizenship'];
+    $citizenshipby = $row ['citizenshipby'];
+    $cid = $row ['cid'];
+    $height = $row ['height'];
+    $weight = $row ['weightt'];
+    $bloodtype = $row ['bloodtype'];
+  }
+
+}
+
+?>
 
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Create New Employee Account</h1>
+      
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item">Create Employee Account</li>
+          <li class="breadcrumb-item active">Updating Basic info of Employee ID: <?php echo $agencyid; ?></li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -29,10 +57,9 @@ include "scripts\admin-check.php";
           <div class="card">
             <div class="card-body">
             <div class="card-body">
-              <h5 class="card-title">Basic Information</h5>
-              <?php
-                include "scripts\basic-mssql.php";
-              ?>
+              <h5 class="card-title">Update Basic Information Form</h5>
+
+              <?php include "scripts\update-basic-script.php"; ?>
 
               <!-- General Form Elements -->
               <form action="" method="post"  enctype="multipart/form-data">
@@ -40,22 +67,25 @@ include "scripts\admin-check.php";
                 <div class="row mb-3">
                   <label for="inputNumber" class="col-sm-2 col-form-label">Profile:</label>
                   <div class="col-sm-10">
-                    <img src="assets/img/personel-logo.jpg" alt="Profile" width="200px" height="200px">
+                    
+                    <?php if($imagepath!=""){ echo "<img src='uploads/$imagepath' width='200px' height='200px'>"; } else { echo '<img src="assets/img/personel-logo.jpg" alt="Profile"'; }?>
+
                   </div>
                 </div>
 
-                <div class="row mb-3">
+                <!-- <div class="row mb-3">
                   <label for="fileupload" class="col-sm-2 col-form-label">File Upload</label>
                   <div class="col-sm-10">
-                    <input class="form-control" type="file" id="imagepath" name="imagepath">
-                  </div>
-                </div>
+                    <?php echo "Current image: ".$imagepath."<br>"; ?>
+                    <input class="" type="file" id="imagepath" name="imagepath" value="uploads/admin pic.jpg">
 
+                  </div>
+                </div> -->
 
                 <div class="row mb-3">
                   <label for="surname" class="col-sm-2 col-form-label">Surname</label>
                   <div class="col-sm-10">
-                    <input required type="text" class="form-control" name="surname" value="<?php if(isset($_POST['surname'])){ echo $_POST['surname']; }?>"  onkeydown="return /[a-z, ]/i.test(event.key)"
+                    <input required type="text" class="form-control" name="surname" value="<?php  echo $surname; ?>"  onkeydown="return /[a-z, ]/i.test(event.key)"
     onblur="if (this.value == '') {this.value = '';}"
     onfocus="if (this.value == '') {this.value = '';}">
                   </div>
@@ -63,13 +93,13 @@ include "scripts\admin-check.php";
                 <div class="row mb-3">
                   <label for="suffix" class="col-sm-2 col-form-label">Suffix</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="suffix" value="<?php if(isset($_POST['suffix'])){ echo $_POST['suffix']; }?>">
+                    <input type="text" class="form-control" name="suffix" value="<?php  echo $suffix; ?>">
                   </div>
                 </div>
                 <div class="row mb-3">
                   <label for="firstname" class="col-sm-2 col-form-label">Firstname</label>
                   <div class="col-sm-10">
-                    <input required type="text" class="form-control" name="firstname" name="suffix" value="<?php if(isset($_POST['firstname'])){ echo $_POST['firstname']; }?>" onkeydown="return /[a-z, ]/i.test(event.key)"
+                    <input required type="text" class="form-control" name="firstname" name="suffix" value="<?php  echo $fname; ?>" onkeydown="return /[a-z, ]/i.test(event.key)"
     onblur="if (this.value == '') {this.value = '';}"
     onfocus="if (this.value == '') {this.value = '';}">
                   </div>
@@ -77,7 +107,7 @@ include "scripts\admin-check.php";
                 <div class="row mb-3">
                   <label for="inputNumber" class="col-sm-2 col-form-label">Middle name</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="middlename" value="<?php if(isset($_POST['middlename'])){ echo $_POST['middlename']; }?>" onkeydown="return /[a-z, ]/i.test(event.key)"
+                    <input type="text" class="form-control" name="middlename" value="<?php  echo $mname; ?>" onkeydown="return /[a-z, ]/i.test(event.key)"
     onblur="if (this.value == '') {this.value = '';}"
     onfocus="if (this.value == '') {this.value = '';}">
                   </div>
@@ -86,14 +116,14 @@ include "scripts\admin-check.php";
                 <div class="row mb-3">
                   <label for="dob" class="col-sm-2 col-form-label">Date of Birth</label>
                   <div required class="col-sm-10">
-                    <input type="date" class="form-control" name="dob" value="<?php if(isset($_POST['dob'])){ echo $_POST['dob']; }?>">
+                    <input type="date" class="form-control" name="dob" value="<?php echo $dob; ?>" required>
                   </div>
                 </div>
 
                 <div class="row mb-3">
                   <label for="pob" class="col-sm-2 col-form-label">Place of Birth</label>
                   <div class="col-sm-10">
-                    <input required type="text" class="form-control"  name="pob" value="<?php if(isset($_POST['pob'])){ echo $_POST['pob']; }?>">
+                    <input type="text" class="form-control"  name="pob" value="<?php  echo $pob; ?>" required>
                   </div>
                 </div>
 
@@ -101,13 +131,17 @@ include "scripts\admin-check.php";
                   <legend class="col-form-label col-sm-2 pt-0">Gender</legend>
                   <div class="col-sm-10">
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="radiogender" id="male" value="male" required <?php echo (isset($_POST['radiogender']) && $_POST['radiogender'] == "male") ? "checked" : ""; ?>>
+                      <input class="form-check-input" type="radio" name="radiogender" id="male" value="male" required <?php if($gender=="male"){
+                        echo "checked";
+                      } ?>>
                       <label class="form-check-label" for="gridRadios1">
                         Male
                       </label>
                     </div>
                     <div class="form-check">
-                      <input class="form-check-input" type="radio" name="radiogender" id="female" required value="female"<?php echo (isset($_POST['radiogender']) && $_POST['radiogender'] == "female") ? "checked" : "";?>>
+                      <input class="form-check-input" type="radio" name="radiogender" id="female" required value="female"<?php if($gender=="female"){
+                        echo "checked";
+                      } ?>>
                       <label class="form-check-label" for="gridRadios2">
                         Female
                       </label>
@@ -120,26 +154,34 @@ include "scripts\admin-check.php";
                   <div class="col-sm-10">
                     <div class="form-check">
                       <input  required class="form-check-input" type="radio" name="radiocivil" id="single" value="single" 
-                      <?php echo (isset($_POST['radiocivil']) && $_POST['radiocivil'] == "single") ? "checked" : ""; ?>
+                      <?php if($civil=="single"){
+                        echo "checked";
+                      } ?>
                       >
                       <label class="form-check-label" for="radiocivil">
                         Single
                       </label>
                     </div>
                     <div class="form-check">
-                      <input required class="form-check-input" type="radio" name="radiocivil" id="married" value="married" <?php echo (isset($_POST['radiocivil']) && $_POST['radiocivil'] == "married") ? "checked" : ""; ?>>
+                      <input required class="form-check-input" type="radio" name="radiocivil" id="married" value="married" <?php if($civil=="married"){
+                        echo "checked";
+                      } ?>>
                       <label required class="form-check-label" for="radiocivil">
                         Married
                       </label>
                     </div>
                     <div class="form-check">
-                      <input required class="form-check-input" type="radio" name="radiocivil" id="widowed" value="widowed" <?php echo (isset($_POST['radiocivil']) && $_POST['radiocivil'] == "widowed") ? "checked" : ""; ?>>
+                      <input required class="form-check-input" type="radio" name="radiocivil" id="widowed" value="widowed" <?php if($civil=="widowed"){
+                        echo "checked";
+                      } ?>>
                       <label class="form-check-label" for="radiocivil">
                         Widowed
                       </label>
                     </div>
                     <div class="form-check">
-                      <input required class="form-check-input" type="radio" name="radiocivil" id="separated" value="separated" <?php echo (isset($_POST['radiocivil']) && $_POST['radiocivil'] == "separated") ? "checked" : ""; ?>>
+                      <input required class="form-check-input" type="radio" name="radiocivil" id="separated" value="separated" <?php if($civil=="separated"){
+                        echo "checked";
+                      } ?>>
                       <label class="form-check-label" for="radiocivil">
                         Separated
                       </label>
@@ -151,13 +193,17 @@ include "scripts\admin-check.php";
                   <legend class="col-form-label col-sm-2 pt-0">Citizenship</legend>
                   <div class="col-sm-10">
                     <div class="form-check">
-                      <input required class="form-check-input" type="radio" name="radiocitizen" id="filipino" value="filipino" <?php echo (isset($_POST['radiocitizen']) && $_POST['radiocitizen'] == "filipino") ? "checked" : ""; ?> onclick="hidedual()">
+                      <input required class="form-check-input" type="radio" name="radiocitizen" id="filipino" value="filipino" <?php if($citizenship=="filipino"){
+                        echo "checked";
+                      } ?> onclick="hidedual()">
                       <label class="form-check-label" for="gridRadios1">
                         Filipino
                       </label>
                     </div>
                     <div class="form-check">
-                      <input required class="form-check-input" type="radio" name="radiocitizen" id="dual" value="dual" <?php echo (isset($_POST['radiocitizen']) && $_POST['radiocitizen'] == "dual") ? "checked" : "";?> onclick="showdual()" >
+                      <input required class="form-check-input" type="radio" name="radiocitizen" id="dual" value="dual" <?php if($citizenship=="dual"){
+                        echo "checked";
+                      } ?> onclick="showdual()" >
                       <label class="form-check-label" for="gridRadios2">
                         Dual
                       </label>
@@ -165,17 +211,50 @@ include "scripts\admin-check.php";
                   </div>
                 </fieldset>
 
+                
+
+                <div class="row mb-3" id="ciddiv">
+                  <label for="dual" class="col-sm-2 col-form-label" id="cidlabel" 
+                   <?php
+                    if($citizenship == "dual")
+                    {
+                      echo "style='display:block'"; 
+                    }
+                    else {
+                      echo "style='display:none'";
+                    }
+                    ?> >Country if dual</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" name="cid" id ="cidid" 
+                    value="<?php echo $cid;?>" 
+
+                    <?php
+                    if($citizenship == "dual")
+                    {
+                      echo "style='display:block'"; 
+                    }
+                    else {
+                      echo "style='display:none'";
+                    }
+                    ?>>
+                  </div>
+                </div>
+
                 <fieldset class="row mb-3">
                   <legend class="col-form-label col-sm-2 pt-0">Citizenship By</legend>
                   <div class="col-sm-10">
                     <div class="form-check">
-                      <input required class="form-check-input" type="radio" name="radiocitizenby" id="filipino" value="By Birth" <?php echo (isset($_POST['radiocitizenby']) && $_POST['radiocitizenby'] == "By Birth") ? "checked" : ""; ?> required>
+                      <input required class="form-check-input" type="radio" name="radiocitizenby" id="filipino" value="By Birth" <?php if($citizenshipby=="By Birth"){
+                        echo "checked";
+                      } ?> required>
                       <label class="form-check-label" for="gridRadios1">
                         By Birth
                       </label>
                     </div>
                     <div class="form-check">
-                      <input required class="form-check-input" type="radio" name="radiocitizenby" id="dual" value="By Naturalization" <?php echo (isset($_POST['radiocitizenby']) && $_POST['radiocitizenby'] == "By Naturalization") ? "checked" : "";?> required>
+                      <input required class="form-check-input" type="radio" name="radiocitizenby" id="dual" value="By Naturalization" <?php if($citizenshipby=="By Naturalization"){
+                        echo "checked";
+                      } ?>required>
                       <label class="form-check-label" for="gridRadios2">
                         By Naturalization
                       </label>
@@ -183,27 +262,17 @@ include "scripts\admin-check.php";
                   </div>
                 </fieldset>
 
-                <div class="row mb-3" id="ciddiv">
-                  <label for="dual" class="col-sm-2 col-form-label" id="cidlabel" <?php echo (isset($_POST['radiodual']) && $_POST['radiodual'] == "dual") ? "style='display:block'" : "style='display:none'";?> >Country if dual</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" name="cid" id ="cidid" 
-                    value="<?php if(isset($_POST['cid'])){ echo $_POST['cid'];}?>" 
-
-                    <?php echo (isset($_POST['radiodual']) && $_POST['radiodual'] == "dual") ? "style='display:block'" : "style='display:none'";?>>
-                  </div>
-                </div>
-
                 <div class="row mb-3">
                   <label for="height" class="col-sm-2 col-form-label">Height (Cm)</label>
                   <div class="col-sm-10">
-                    <input  required type="number" class="form-control" name="height" value="<?php if(isset($_POST['height'])){ echo $_POST['height']; }?>">
+                    <input  required type="number" class="form-control" name="height" value="<?php echo $height; ?>">
                   </div>
                 </div>
 
                 <div class="row mb-3">
                   <label for="weight" class="col-sm-2 col-form-label">Weight (Kg)</label>
                   <div class="col-sm-10">
-                    <input  required type="number" class="form-control" name="weight" value="<?php if(isset($_POST['weight'])){ echo $_POST['weight']; }?>">
+                    <input  required type="number" class="form-control" name="weight" value="<?php echo $weight; ?>">
                   </div>
                 </div>
 
@@ -212,78 +281,23 @@ include "scripts\admin-check.php";
                   <div class="col-sm-10">
                     <select required class="form-select" name="bloodtype">
                       <option selected value="0"> - SELECT - </option>
-                      <option value="A+" <?php echo (isset($_POST['bloodtype']) && $_POST['bloodtype'] == "A+") ? "selected='selected'" : "";?>>A+</option>
-                      <option value="B+" <?php echo (isset($_POST['bloodtype']) && $_POST['bloodtype'] == "B+") ? "selected='selected'" : "";?>>B+</option>
-                      <option value="AB+" <?php echo (isset($_POST['bloodtype']) && $_POST['bloodtype'] == "AB+") ? "selected='selected'" : "";?>>AB+</option>
-                      <option value="A-" <?php echo (isset($_POST['bloodtype']) && $_POST['bloodtype'] == "A-") ? "selected='selected'" : "";?>>A-</option>
-                      <option value="B-" <?php echo (isset($_POST['bloodtype']) && $_POST['bloodtype'] == "B-") ? "selected='selected'" : "";?>>B-</option>
-                      <option value="AB-" <?php echo (isset($_POST['bloodtype']) && $_POST['bloodtype'] == "AB-") ? "selected='selected'" : "";?>>AB-</option>
-                      <option value="AB+" <?php echo (isset($_POST['bloodtype']) && $_POST['bloodtype'] == "AB+") ? "selected='selected'" : "";?>>AB+</option>
-                      <option value="O+" <?php echo (isset($_POST['bloodtype']) && $_POST['bloodtype'] == "O+") ? "selected='selected'" : "";?>>O+</option>
-                      <option value="O-" <?php echo (isset($_POST['bloodtype']) && $_POST['bloodtype'] == "O-") ? "selected='selected'" : "";?>>O-</option>
+                      <option value="A+" <?php if ($bloodtype == "A+"){ echo "selected='selected'"; }?>>A+</option>
+                      <option value="B+" <?php if ($bloodtype == "B+"){ echo "selected='selected'"; }?>>B+</option>
+                      <option value="A-" <?php if ($bloodtype == "A-"){ echo "selected='selected'"; }?>>A-</option>
+                      <option value="B-" <?php if ($bloodtype == "B-"){ echo "selected='selected'"; }?>>B-</option>
+                      <option value="AB-" <?php if ($bloodtype == "AB-"){ echo "selected='selected'"; }?>>AB-</option>
+                      <option value="AB+" <?php if ($bloodtype == "AB+"){ echo "selected='selected'"; }?>>AB+</option>
+                      <option value="O+" <?php if ($bloodtype == "O+"){ echo "selected='selected'"; }?>>O+</option>
+                      <option value="O-" <?php if ($bloodtype == "O-"){ echo "selected='selected'"; }?>>O-</option>
                     </select>
                   </div>
                 </div>
 
-                <div class="row mb-3">
-                  <label for="username" class="col-sm-2 col-form-label">Username</label>
-                  <div class="col-sm-10">
-                    <input  required type="text" class="form-control" name="username"  value="<?php if(isset($_POST['username'])){ echo $_POST['username']; }?>">
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label for="v required password" class="col-sm-2 col-form-label" name="password">Password</label>
-                  <div class="col-sm-10">
-                    <input type="password" class="form-control" name="password" required>
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label for="password" class="col-sm-2 col-form-label">Re-type password</label>
-                  <div class="col-sm-10">
-                    <input  required type="password" class="form-control" name="retype">
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-sm-2 col-form-label">Userlevel</label>
-                  <div class="col-sm-10">
-                    <select required class="form-select" aria-label="multiple select example"  name="userlevel" >
-                      <option selected value="0"> - SELECT - </option>
-                      <?php
-                    
-                    include "scripts\connect.php";
-                    $sql_empname = "select level_name,level from dbo.select_userlevel where  level > '1'";
-                          
-                            if($result = sqlsrv_query($conn, $sql_empname))
-                            {
-
-                                while($row = sqlsrv_fetch_array($result))
-                                {
-
-                                  $levelname = $row['level_name'];
-                                  $level = $row['level'];
-
-                                    if($_POST['userlevel'] == $level)
-                                    {
-                                        echo "<option value='".$level."' selected>".$levelname."</option>";
-                                    }
-                                    else
-                                    {
-                                        echo "<option value='".$level."' >".$levelname."</option>";
-                                    }
-
-                                }
-                            }
-                            ?> 
-                    </select>
-                  </div>
-                </div>
+               
 
                 <div class="text-center">
                   <div class="col-sm-10">
-                    <button type="submit" name="basicsave" class="btn btn-primary">Submit Form</button>
+                    <button type="submit" name="basicsave" class="btn btn-primary">Update Records</button>
                   </div>
                 </div>
 
@@ -459,9 +473,10 @@ include "scripts\admin-check.php";
         var hidecid = document.getElementById("cidid");
         var hideciddiv = document.getElementById("ciddiv");
 
-        hidecid.style.display = "block";
-        cidlabel.style.display = "block";
-        
+          hidecid.style.display = "block";
+          cidlabel.style.display = "block";
+
+
     }
 </script>
 

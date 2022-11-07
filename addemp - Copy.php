@@ -13,11 +13,11 @@ include "scripts\admin-check.php";
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Create New Employee Account</h1>
+      <h1>Add new employee</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item">Create Employee Account</li>
+          <li class="breadcrumb-item">Add new record</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
