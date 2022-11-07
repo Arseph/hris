@@ -34,7 +34,7 @@ $user_sname = $get_row['surname'];
               <?php
               echo "<a href='emp-add-designation.php?uid=".$user_id."' class='btn btn-primary'>Add New Designation</a>";
               ?>
-                <table class="table table-borderless datatable">
+                <table id="tableInfo" class="table table-borderless datatable">
                     <thead>
                       <tr>
                         <th class="fw-bold">Action</th>
@@ -131,7 +131,7 @@ $user_sname = $get_row['surname'];
                               echo "<td>
                               <a href='employee-summary.php?uid=".$agencyid."' class='btn btn-success'>View <img src='assets/img/eye.svg'></a>
 
-                              <a href='phpspreadsheet2/simple1.php?uid=".$agencyid."' class='btn btn-primary'>Download<img src='assets/img/download.svg'></a>
+                              <a class='btn btn-primary pdsfile' data-id='".$agencyid."'>PDS<img src='assets/img/download.svg'></a>
                               </td>";
 
                               echo "<td>".$agencyid."</td>";
@@ -169,6 +169,31 @@ $user_sname = $get_row['surname'];
           </div>
     </section>
   </form>
+  <!-- The Modal -->
+  <div class="modal" id="myModal">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">PERSONAL DATA SHEET</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <!-- Modal body -->
+        <div id="printpds" class="modal-body"></div>
+        <div id="editor"></div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary dlpds">Download</button>
+          <button type="button" class="btn btn-success" onclick="printDiv()">Print</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
   </main><!-- End #main -->
 
   <?php
@@ -178,6 +203,10 @@ $user_sname = $get_row['surname'];
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
   <!-- Vendor JS Files -->
+  <script type="text/javascript" src="assets/js/png.js"></script>
+  <script type="text/javascript" src="assets/js/addimage.js"></script>
+  <script type="text/javascript" src="assets/js/png_support.js"></script>
+  <script type="text/javascript" src="assets/js/jspdf.js"></script>
   <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="assets/vendor/chart.js/chart.min.js"></script>
@@ -189,6 +218,40 @@ $user_sname = $get_row['surname'];
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script>
+    $(document).ready(function() {
+      $("#tableInfo").on("click", ".pdsfile", function() {
+          $.ajax({
+            type: "POST",
+            url: 'pds/page1.php',
+            data: {
+              id: $(this).attr("data-id")
+            },
+            success: function(response)
+            {
+                $('#myModal').modal('show');
+                $('.modal-body').html(response);
+            }
+         });
+       });
+    });
+      function printDiv() 
+      {
+
+        var divToPrint=document.getElementById('printpds');
+
+        var newWin=window.open('','Print-Window');
+
+        newWin.document.open();
+
+        newWin.document.write('<html><body onload="window.print()">'+divToPrint.innerHTML+'</body></html>');
+
+        newWin.document.close();
+
+        setTimeout(function(){newWin.close();},10);
+
+      }
+  </script>
 
 </body>
 
