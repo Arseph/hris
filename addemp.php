@@ -2,7 +2,8 @@
 session_start();
 include "scripts\connect.php";
 include "layouts\layout_sidebar.php";
-include "scripts\admin-check.php";qqqqqqq
+
+include "scripts\admin-check.php";
 //error_reporting(E_ALL ^ E_NOTICE);
 
 ?>
@@ -12,11 +13,11 @@ include "scripts\admin-check.php";qqqqqqq
   <main id="main" class="main">
 
     <div class="pagetitle">
-      <h1>Add new employee</h1>
+      <h1>Create New Employee Account</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item">Add new record</li>
+          <li class="breadcrumb-item">Create Employee Account</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
