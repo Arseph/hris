@@ -1,42 +1,4 @@
-<?php
-session_start();
-$params = array();
-$options = array("Scrollable" => SQLSRV_CURSOR_KEYSET);
-$uid = $_POST['id'];
-include "../scripts/connect.php";
-$basic = "select * from emp_basic where agencyid='$uid'";
-if($result = sqlsrv_query($conn, $basic, $params, $options))
-{$emp_basic_row = sqlsrv_fetch_array($result);}
-$identify = "select * from emp_identification where agencyid='$uid'";
-if($result = sqlsrv_query($conn, $identify, $params, $options))
-{$identify_row = sqlsrv_fetch_array($result);}
-$address = "select * from emp_address where agencyid='$uid'";
-if($result = sqlsrv_query($conn, $address, $params, $options))
-{$adress_row = sqlsrv_fetch_array($result);}
-$family = "select * from emp_family where agencyid='$uid'";
-if($result = sqlsrv_query($conn, $family, $params, $options))
-{$family_row = sqlsrv_fetch_array($result);}
-$children = "select * from emp_children where agencyid='$uid'";
-$html_child = '';
-$left = 766.5;
-if($res_child = sqlsrv_query($conn, $children, $params, $options))
-{ while($children_row = sqlsrv_fetch_array($res_child)) {
-	$html_child .= '<span style="font-size:12px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">';
-	$html_child .= '<span class="text" style="left:576.6px;top:'.$left.'px;">'.$children_row['child_name'].'</span>';
-	$html_child .='<span class="text" style="left:841.5px;top:'.$left.'px;">'.$children_row['bday'].'</span>';
-	$html_child .= '</span>';
-	$left += 26;
-
-}}
-$prim = "select * from emp_education_primary where agencyid='$uid'";
-$prims = sqlsrv_query($conn, $prim, $params, $options);
-$prim_school = '';
-if(sqlsrv_num_rows($prims)>0){
-	while ($prim_row = sqlsrv_fetch_array($prims)) {
-		$prim_school .=  ;
-	}
-}
-?>
+<?php include "./scripts/page1.php"?>
 <style>
 .page { background-color:white; position:relative; z-index:0; }
 .vector { position:absolute; z-index:1; }
@@ -159,17 +121,17 @@ if(sqlsrv_num_rows($prims)>0){
 <span class="text" style="left:97.9px;top:1189.5px;">ENTARY</span>
 </span>
 <span style="font-size:13px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
-<span class="text" style="left:645.8px;top:1187.9px;">elem_fro</span>
-<span class="text" style="left:701.9px;top:1187.9px;">elem_to</span>
+<span class="text" style="left:645.8px;top:1187.9px;"><?php echo $prim_from; ?></span>
+<span class="text" style="left:701.9px;top:1187.9px;"><?php echo $prim_to; ?></span>
 </span>
 <span style="font-size:12px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
-<span class="text" style="left:757.9px;top:1188.9px;">elem_highest</span>
+<span class="text" style="left:757.9px;top:1188.9px;"><?php echo $prim_unit; ?></span>
 </span>
 <span style="font-size:13px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
-<span class="text" style="left:841.7px;top:1187.9px;">elem_year</span>
+<span class="text" style="left:841.7px;top:1187.9px;"><?php echo $prim_grad; ?></span>
 </span>
 <span style="font-size:12px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
-<span class="text" style="left:906.5px;top:1188.9px;">elem_scho</span>
+<span class="text" style="left:906.5px;top:1188.9px;"><?php echo $prim_scholar; ?></span>
 </span>
 <span style="font-size:11px;font-family:&#39;Arial Narrow&#39;;">
 <span class="text" style="left:74.3px;top:1224.8px;">SEC</span>
@@ -177,15 +139,15 @@ if(sqlsrv_num_rows($prims)>0){
 <span class="text" style="left:98.9px;top:1224.8px;">NDARY</span>
 </span>
 <span style="font-size:12px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
-<span class="text" style="left:645.6px;top:1224.2px;">2nd_from</span>
-<span class="text" style="left:701.7px;top:1224.2px;">2nd_to</span>
-<span class="text" style="left:757.9px;top:1224.2px;">second_high</span>
+<span class="text" style="left:645.6px;top:1224.2px;"><?php echo $sec_from;?></span>
+<span class="text" style="left:701.7px;top:1224.2px;"><?php echo $sec_to;?></span>
+<span class="text" style="left:757.9px;top:1224.2px;"><?php echo $sec_unit;?></span>
 </span>
 <span style="font-size:13px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
-<span class="text" style="left:841.7px;top:1223.2px;">2nd_year</span>
+<span class="text" style="left:841.7px;top:1223.2px;"><?php echo $sec_grad;?></span>
 </span>
 <span style="font-size:12px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
-<span class="text" style="left:906.5px;top:1224.2px;">2nd_scho</span>
+<span class="text" style="left:906.5px;top:1224.2px;"><?php echo $sec_scholar;?></span>
 </span>
 <span style="font-size:11px;font-family:&#39;Arial Narrow&#39;;">
 <span class="text" style="left:74.3px;top:1253.3px;">VOC</span>
@@ -195,11 +157,11 @@ if(sqlsrv_num_rows($prims)>0){
 <span class="text" style="left:97.9px;top:1266.7px;">E COURSE</span>
 </span>
 <span style="font-size:12px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
-<span class="text" style="left:645.6px;top:1259.5px;">voc_from</span>
-<span class="text" style="left:701.7px;top:1259.5px;">voc_to</span>
-<span class="text" style="left:757.9px;top:1259.5px;">voc_high</span>
-<span class="text" style="left:841.5px;top:1259.5px;">voc_year</span>
-<span class="text" style="left:906.5px;top:1259.5px;">voc_scho</span>
+<span class="text" style="left:645.6px;top:1259.5px;"><?php echo $voc_from;?></span>
+<span class="text" style="left:701.7px;top:1259.5px;"><?php echo $voc_to;?></span>
+<span class="text" style="left:757.9px;top:1259.5px;"><?php echo $voc_unit;?></span>
+<span class="text" style="left:841.5px;top:1259.5px;"><?php echo $voc_grad;?></span>
+<span class="text" style="left:906.5px;top:1259.5px;"><?php echo $voc_scholar;?></span>
 </span>
 <span style="font-size:11px;font-family:&#39;Arial Narrow&#39;;">
 <span class="text" style="left:74.3px;top:1295.4px;">COL</span>
@@ -207,17 +169,17 @@ if(sqlsrv_num_rows($prims)>0){
 <span class="text" style="left:96.8px;top:1295.4px;">EGE</span>
 </span>
 <span style="font-size:13px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
-<span class="text" style="left:645.8px;top:1293.7px;">collfrom</span>
-<span class="text" style="left:701.9px;top:1293.7px;">collegeto</span>
+<span class="text" style="left:645.8px;top:1293.7px;"><?php echo $bac_from;?></span>
+<span class="text" style="left:701.9px;top:1293.7px;"><?php echo $bac_to;?></span>
 </span>
 <span style="font-size:12px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
-<span class="text" style="left:757.9px;top:1294.8px;">college_high</span>
+<span class="text" style="left:757.9px;top:1294.8px;"><?php echo $bac_unit;?></span>
 </span>
 <span style="font-size:13px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
-<span class="text" style="left:841.7px;top:1293.7px;">college_yr</span>
+<span class="text" style="left:841.7px;top:1293.7px;"><?php echo $bac_grad;?></span>
 </span>
 <span style="font-size:12px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
-<span class="text" style="left:906.5px;top:1294.8px;">college_scho</span>
+<span class="text" style="left:906.5px;top:1294.8px;"><?php echo $bac_scholar;?></span>
 </span>
 <span style="font-size:11px;font-family:&#39;Arial Narrow&#39;;">
 <span class="text" style="left:74.3px;top:1330.7px;">GRA</span>
@@ -225,11 +187,11 @@ if(sqlsrv_num_rows($prims)>0){
 <span class="text" style="left:99.3px;top:1330.7px;">UATE STUDIES</span>
 </span>
 <span style="font-size:12px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
-<span class="text" style="left:645.6px;top:1330.1px;">gradfrom</span>
-<span class="text" style="left:701.7px;top:1330.1px;">gradto</span>
-<span class="text" style="left:757.9px;top:1330.1px;">grad_high</span>
-<span class="text" style="left:841.5px;top:1330.1px;">grad_year</span>
-<span class="text" style="left:906.5px;top:1330.1px;">grad_scho</span>
+<span class="text" style="left:645.6px;top:1330.1px;"><?php echo $grad_from;?></span>
+<span class="text" style="left:701.7px;top:1330.1px;"><?php echo $grad_to;?></span>
+<span class="text" style="left:757.9px;top:1330.1px;"><?php echo $grad_unit;?></span>
+<span class="text" style="left:841.5px;top:1330.1px;"><?php echo $grad_grad;?></span>
+<span class="text" style="left:906.5px;top:1330.1px;"><?php echo $grad_scholar;?></span>
 </span>
 <span style="font-size:11px;font-family:&#39;Arial Narrow&#39;;">
 <span class="text" style="left:58.2px;top:1132.7px;">26.</span>
@@ -271,18 +233,18 @@ if(sqlsrv_num_rows($prims)>0){
 <span class="text" style="left:217.8px;top:1051.2px;"><?php echo $family_row['mother_fname']?></span>
 </span>
 <span style="font-size:11px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
-<span class="text" style="left:217.4px;top:1259.3px;">voc_name_school</span>
-<span class="text" style="left:440.8px;top:1259.3px;">voc_basic_educ</span>
+<span class="text" style="left:217.4px;top:1259.3px;"><?php echo $voc_school;?></span>
+<span class="text" style="left:440.8px;top:1259.3px;"><?php echo $voc_basic_educ;?></span>
 </span>
 <span style="font-size:14px;font-family:&#39;Arial Narrow&#39;;font-style:italic;font-weight:bold;">
 <span class="text" style="left:682.9px;top:1377.0px;">DATE</span>
 </span>
 <span style="font-size:11px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
-<span class="text" style="left:842.9px;top:1379.4px;">date_today</span>
-<span class="text" style="left:217.4px;top:1294.6px;">college_name_school</span>
-<span class="text" style="left:440.8px;top:1294.6px;">college_basic_educ</span>
-<span class="text" style="left:217.4px;top:1329.9px;">grad_name_school</span>
-<span class="text" style="left:440.8px;top:1329.9px;">grad_basic_educ</span>
+<span class="text" style="left:842.9px;top:1379.4px;"><?php echo date('m/d/Y');?></span>
+<span class="text" style="left:217.4px;top:1294.6px;"><?php echo $bac_school;?></span>
+<span class="text" style="left:440.8px;top:1294.6px;"><?php echo $bac_basic_educ;?></span>
+<span class="text" style="left:217.4px;top:1329.9px;"><?php echo $grad_school;?></span>
+<span class="text" style="left:440.8px;top:1329.9px;"><?php echo $grad_basic_educ;?></span>
 </span>
 <span style="color:#FF0000;font-size:11px;font-family:&#39;Arial Narrow&#39;;font-style:italic;font-weight:bold;">
 <span class="text" style="left:428.4px;top:1354.9px;">(Continue on separate sheet if necessary)</span>
@@ -298,16 +260,16 @@ if(sqlsrv_num_rows($prims)>0){
 <span class="text" style="left:303.3px;top:1148.0px;">(Write in full)</span>
 </span>
 <span style="font-size:11px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
-<span class="text" style="left:217.4px;top:1188.7px;">ele_mentary_name_school</span>
+<span class="text" style="left:217.4px;top:1188.7px;"><?php echo $prim_school;?></span>
 </span>
 <span style="font-size:9px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
-<span class="text" style="left:440.8px;top:1189.7px;">elem_basic_educ</span>
+<span class="text" style="left:440.8px;top:1189.7px;"><?php echo $prim_basic_educ;?></span>
 </span>
 <span style="font-size:11px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
-<span class="text" style="left:217.4px;top:1224.0px;">secondary_name_school</span>
+<span class="text" style="left:217.4px;top:1224.0px;"><?php echo $sec_school;?></span>
 </span>
-<span style="font-size:9px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
-<span class="text" style="left:440.8px;top:1225.0px;">secondary_basic_educ</span>
+<span style="font-size:11px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
+<span class="text" style="left:440.8px;top:1225.0px;"><?php echo $sec_basic_educ;?></span>
 </span>
 <span style="font-size:13px;font-family:&#39;Arial Narrow&#39;;font-weight:bold;">
 <span class="text" style="left:217.8px;top:1077.4px;"><?php echo $family_row['mother_mname']?></span>
