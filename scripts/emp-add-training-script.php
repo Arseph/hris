@@ -70,7 +70,7 @@ include "connect.php";
         {
 
           $query="insert into dbo.emp_training (agencyid,ca,coc,title,from_date,to_date,hour_num,ld_type,conduct_sponsor,void) values (?,?,?,?,?,?,?,?,?,?)";
-          $params= array("$agencyid", "$destination", "$coc_destination", "$title", "$from_date", "$to_date", "$hour_num", "$ld_type", "$conduct_sponsor","1");
+          $params= array("$uid", "$destination", "$coc_destination", "$title", "$from_date", "$to_date", "$hour_num", "$ld_type", "$conduct_sponsor","1");
 
 
           $stmt = sqlsrv_query($conn, $query, $params);    

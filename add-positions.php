@@ -33,6 +33,7 @@ include "scripts\admin-check.php";
                         <th scope="col">Position Name</th>
                         <th scope="col">Short-Code</th>
                         <th scope="col">Permanent Position</th>
+                        <th scope="col">Item No.</th>
                       </tr>
                     </thead>
                     <?php

@@ -2,17 +2,13 @@
 session_start();
 include "layouts\layout_sidebar.php";
 include "scripts\connect.php";
-
+include "scripts\kick.php";
 
 if (!isset($_SESSION['user_id']))
 {
     header('location:pages-login.php');
 }
-$uid=$_SESSION['user_id'];
-
-
-
-
+$uid=$_GET['uid'];
 
 ?>
 
@@ -22,7 +18,17 @@ $uid=$_SESSION['user_id'];
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item">Trainings List</li>
+                    <?php
+          if($_SESSION['userlevel']<3)
+          {
+            echo '<li class="breadcrumb-item"><a href="adm-master-list.php">Employee Master List</a></li>';
+
+            echo '<li class="breadcrumb-item"><a href="employee-summary.php?uid='.$uid.'">Employee Summary</a></li>';
+
+
+          }
+          ?>
+          <li class="breadcrumb-item">Trainings History</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -91,8 +97,6 @@ $uid=$_SESSION['user_id'];
                             
                           echo'
                             <td>
-
-                            <a href="emp-view-training.php?id='.$id.'" class="btn btn-primary"><img src="assets/img/eye-fill.svg"></a>
 
                             <a href="emp-update-training.php?id='.$id.'&uid='.$uid.'" class="btn btn-success"><img src="assets/img/pen-fill.svg"></a>
 

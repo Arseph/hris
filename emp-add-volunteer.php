@@ -2,6 +2,7 @@
 session_start();
 include "scripts\connect.php";
 include "layouts\layout_sidebar.php";
+include "scripts\kick.php";
 //error_reporting(E_ALL ^ E_NOTICE);
 $uid = $_GET['uid'];
 
@@ -16,8 +17,13 @@ $uid = $_GET['uid'];
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+          <?php
+          if($_SESSION['userlevel']<3){
+            echo '<li class="breadcrumb-item"><a href="employee-summary.php?uid='.$uid.'">Employee Summary</a></li>';
+          }
+          ?>
           <li class="breadcrumb-item"><a href="<?php echo 'emp-volunteer-list.php?uid='.$uid; ?>">Volunteer Work History</a></li>
-          <li class="breadcrumb-item">Add new Training</li>
+          <li class="breadcrumb-item">Add new Volunteer Work</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -84,7 +90,7 @@ $uid = $_GET['uid'];
 
                 <div class="text-center">
                   <div class="col-sm-12">
-                    <button type="submit" name="basicsave" class="btn btn-primary">Submit Form</button>
+                    <button type="submit" name="basicsave" class="btn btn-primary">Submit</button>
                     <a class='btn btn-secondary' href="<?php echo 'emp-volunteer-list.php?uid='.$uid; ?>">Cancel</a>
                   </div>
                 </div>

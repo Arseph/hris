@@ -42,17 +42,26 @@ if(isset($_POST['update_address']))
        $r_province = "";
     }
 
-    $query="update emp_address set p_house=?, p_street=?, p_village=?, p_barangay=?, p_city=?, p_province=?, p_countrynum=?, p_contact=?, r_house=?, r_street=?, r_village=?, r_barangay=?, r_city=?, r_province=?, r_countrynum=?, r_contact=?, r_zip=?, p_zip=?  where agencyid=? and id=?";
+    $query="update emp_address set p_house=?, p_street=?, p_village=?, p_barangay=?, p_city=?, p_province=?, p_countrynum=?, p_contact=?, r_house=?, r_street=?, r_village=?, r_barangay=?, r_city=?, r_province=?, r_countrynum=?, r_contact=?, r_zip=?, p_zip=?  where agencyid=?";
     
-    $params= array($p_house, $p_street, $p_village, $p_barangay, $p_city, $p_province, $p_countrynum, $p_contact, $r_house,$r_street,$r_village,$r_barangay,$r_city,$r_province, $r_countrynum, $r_contact, $r_zip, $p_zip, $uid, $id);
+    $params= array($p_house, $p_street, $p_village, $p_barangay, $p_city, $p_province, $p_countrynum, $p_contact, $r_house,$r_street,$r_village,$r_barangay,$r_city,$r_province, $r_countrynum, $r_contact, $r_zip, $p_zip, $uid);
 
 
     $stmt = sqlsrv_query($conn, $query, $params);
 
     include "scripts/audit_emp_update_address.php";
 
-            echo '<script>alert("Record Successfully Updated")</script>';
-            echo "<script>window.open('index.php','_self')</script>";
+    echo '<script>alert("Record Successfully Updated")</script>';
+
+            if($_SESSION['userlevel'] == 3 )
+            {
+              echo "<script>window.open('index.php','_self')</script>";
+            }
+            
+            if(($_SESSION['userlevel']==1)||($_SESSION['userlevel']==2))
+            {
+              echo "<script>window.open('employee-summary.php?uid=".$uid."','_self')</script>";
+            }
     
         
   }

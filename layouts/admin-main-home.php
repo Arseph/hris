@@ -242,70 +242,109 @@
               </ul>
             </div>
 
+            <?php
+            $monthnum = date('m');
 
-            <!-- bday script -->
-            <?php 
-
-            // $month_today = date('m');
-            
-            // $active_sql = "select * from HR_INFO where active = '1'"; 
-            // $bday_stmt = sqlsrv_query($conn, $bday_sql);
-            
-            // while($row = sqlsrv_fetch_array($active_sql))
-            // {
-            //   $active_uid = $row['agencyid'];
-
-            //   $get_bday = "select * from emp_basic where agencyid='$active_uid'";
-            //   $bday_stmt = sqlsrv_query($conn, $get_bday);
-
-            // }
-
+            $dateObj = DateTime::createFromFormat('!m', $monthnum);
+  
+            // Store the month name to variable
+            $monthName = $dateObj->format('F');
 
             ?>
 
 
             <div class="card-body pb-0">
-              <h5 class="card-title">Birthdays For the month of <span>| Today</span></h5>
+              <h5 class="card-title">Birthday Celebrants For the month of <?php echo $monthName; ?></h5>
 
               <div class="news">
-                <div class="post-item clearfix">
-                  <img src="assets/img/news-1.jpg" alt="">
-                  <h4><a href="#">Charlie Magne Martinez's Birthday is on August</a></h4>
-                  <p>He is turning 29 this month</p>
-                </div>
-
-                <div class="post-item clearfix">
-                  <img src="assets/img/news-1.jpg" alt="">
-                  <h4><a href="#">Charlie Magne Martinez's Birthday is on August</a></h4>
-                  <p>He is turning 29 this month</p>
-                </div>
-
-                <div class="post-item clearfix">
-                  <img src="assets/img/news-1.jpg" alt="">
-                  <h4><a href="#">Charlie Magne Martinez's Birthday is on August</a></h4>
-                  <p>He is turning 29 this month</p>
-                </div>
 
 
 
+                <?php
 
-               <!--  <div class="post-item clearfix">
-                  <img src="assets/img/news-3.jpg" alt="">
-                  <h4><a href="#">Employee name step incremented</a></h4>
-                  <p>Employee monthly salary updated</p>
-                </div>
+                $get_active = "select * from HR_INFO where active = '1'";
+                $active_stmt = sqlsrv_query($conn,$get_active);
 
-                <div class="post-item clearfix">
-                  <img src="assets/img/news-4.jpg" alt="">
-                  <h4><a href="#">Employee name is Eligible for promotion</a></h4>
-                  <p>Employee monthly Salary updated</p>
-                </div>
+                while($active_row = sqlsrv_fetch_array($active_stmt))
+                {
+                  $uidfor_bday = $active_row['agencyid'];
 
-                <div class="post-item clearfix">
-                  <img src="assets/img/news-5.jpg" alt="">
-                  <h4><a href="#">Employee entered Retirement Age</a></h4>
-                  <p>Status Changed to inactive</p>
-                </div> -->
+                  $find_userlvl = "select * from user_accounts where agencyid='$uidfor_bday'";
+                  $userlvl_stmt = sqlsrv_query($conn, $find_userlvl);
+
+
+                  while($userlvl_row=sqlsrv_fetch_array($userlvl_stmt))
+                  {
+                    $user_level = $userlvl_row['userlevel'];
+
+
+                    $get_bday = "select * from emp_basic where agencyid='$uidfor_bday' and firstname!='admin'";
+                    $bday_stmt = sqlsrv_query($conn, $get_bday);
+
+ 
+
+
+                      while($bday_row = sqlsrv_fetch_array($bday_stmt))
+                      {
+
+                        $bday_date = $bday_row['dob'];
+                        $last_name = $bday_row['surname'];
+                        $first_name = $bday_row['firstname'];
+                        $profile_image = $bday_row['imagepath'];
+                        
+
+                        if(!is_null($bday_date))
+                        {
+                          $month_hired = substr($bday_date, 5,-3);
+                          $this_month = date('m');
+                          $bday_day = substr($bday_date, 8);
+
+
+                          if($this_month==$month_hired)
+                          {
+                            echo '<div class="post-item clearfix">';
+
+                            if(!is_null($profile_image))
+                            {
+                              
+                              $image_format = substr($profile_image, -4);
+
+                              if($image_format=='.jpg')
+                              {
+                                echo '<a href="employee-summary.php?uid='.$uidfor_bday.'"><img src="uploads/'.$profile_image.'" alt=""></a>';
+                              }
+
+                              if($image_format=='.png')
+                              {
+                                echo '<a href="employee-summary.php?uid='.$uidfor_bday.'"><img src="uploads/'.$profile_image.'" alt=""></a>';
+                              }
+
+                            }
+                            else
+                            {
+                              echo '<img src="assets/img/personel-logo.jpg" alt="">';
+                              
+                            }
+                            
+                            echo '<h4><a href="employee-summary.php?uid='.$uidfor_bday.'"><b style="color:blue;">'.$first_name.' '.$last_name.'\'</b>s Birthday is on '.$monthName.' '.$bday_day.'</a></h4>';
+                          echo '</div>';
+                          }
+
+                        }
+
+
+                      }
+
+                    
+                  }
+
+                  
+                }
+                
+
+                    
+
+                ?>
 
               </div><!-- End sidebar recent posts-->
 
@@ -377,7 +416,7 @@
                           //count hired per month of every year
                           for($m=1; $m<=12; $m++)
                           {
-                            $get_monthly = "select * from HR_INFO where year_hired='$l' and month_hired = '$m'";
+                            $get_monthly = "select * from HR_INFO where year_hired='$l' and month_hired like '%$m%'";
                             
                             $params = array();
                             $options = array( "Scrollable" => SQLSRV_CURSOR_KEYSET );

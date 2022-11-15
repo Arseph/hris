@@ -4,7 +4,7 @@ $user_id=$_GET['uid'];
 $id=$_GET['id'];
 include "layouts\layout_sidebar.php";
 include "scripts\connect.php";
-
+include "scripts\kick.php";
 
 $data_sql = "select * from emp_eligibility where id='$id'";
 $data_stmt = sqlsrv_query($conn, $data_sql);
@@ -26,17 +26,22 @@ $data_valid = $data_row['valid_date'];
   <main id="main" class="main">
   <form method="post">
     <div class="pagetitle">
-      <h1>Edit Eligibility</h1>
+      <h1>Update Eligibility</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+         <?php
+          if($_SESSION['userlevel']<3){
+            echo '<li class="breadcrumb-item"><a href="employee-summary.php?uid='.$user_id.'">Employee Summary</a></li>';
+          }
+          ?>
+
           <li class="breadcrumb-item">
             <?php 
             echo "<a href='emp-eligibility-list.php?uid=".$user_id."'>Employee Eligibility List</a>";
             ?>            
           </li>
-          <li class="breadcrumb-item">Edit</li>
-          <li class="breadcrumb-item"><?php echo $row['firstname']." ".$row['surname']; ?></li>
+          <li class="breadcrumb-item">Update Eligibility</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -92,7 +97,7 @@ $data_valid = $data_row['valid_date'];
 
 
               <div class="text-center"> 
-                <button class="btn btn-primary" name='btn_save'>Submit</button>
+                <button class="btn btn-primary" name='btn_save'>Update</button>
 
 
                 <?php

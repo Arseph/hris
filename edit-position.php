@@ -1,6 +1,9 @@
 <?php
 session_start();
 include "layouts\layout_sidebar.php";
+include "scripts\admin-check.php";
+
+
 $pos_code = $_GET['pos_code'];
 
 $get_pos = "select * from select_position where pos_code='$pos_code'";

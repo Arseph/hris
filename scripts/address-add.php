@@ -81,7 +81,13 @@ if(isset($_POST["lbtn"]))
       include "scripts/audit_emp_add_address.php";
 
       echo '<script>alert("Record Successfully Added")</script>';
-      echo "<script>window.open('index.php','_self')</script>";
+      
+      if($_SESSION['userlevel']<3)
+        {
+            echo "<script>window.open('employee-summary.php?uid=".$agencyid."','_self')</script>";
+        }else{
+            echo "<script>window.open('index.php','_self')</script>";
+        }
   }
 
 }

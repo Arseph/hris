@@ -75,7 +75,7 @@ while($row=sqlsrv_fetch_array($stmt))
                         {
                      
                           $id=$row['id'];
-                          $leave_id=$row['leave_id'];
+                          $leave_id=$row['leave_type'];
                        
                           $filestat_sql = "select recommendation from leave_status where agencyid='$uid'";
 

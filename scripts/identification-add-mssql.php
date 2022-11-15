@@ -83,6 +83,20 @@ if($_POST['sel_employee']==="0")
 	}
 
 
+	//find dupe
+	$dupe_checker= "select * from emp_identification where gsis_id='$gsis_id' OR pagibig_id='$pagibig_id' OR philhealth_id='$philhealth_id' OR sss_id='$sss_id' OR passport='$passport' OR prc='$prc' OR drivers='$drivers' OR email_ad='$email_ad' OR tin_no='$tin_no'";
+
+	$params = array();
+	$options = array("Scrollable"=> SQLSRV_CURSOR_KEYSET);
+
+	$dupecheck_stmt = sqlsrv_query($conn, $dupe_checker, $params, $options);
+	$total_dupe = sqlsrv_num_rows($dupecheck_stmt);
+
+
+	if($total_dupe>0){
+		$errorcount++;
+	}
+
 	
 	if($errorcount==0)
 	{
@@ -95,7 +109,16 @@ if($_POST['sel_employee']==="0")
   include "audit_emp_add_identification.php";
 
   echo '<script>alert("Record Successfully Updated")</script>';
-  echo "<script>window.open('index.php','_self')</script>";
+
+  	if($_SESSION['userlevel']<3)
+  	{
+  		echo "<script>window.open('employee-summary.php?uid=".$agencyid."','_self')</script>";
+  	}else{
+  		echo "<script>window.open('index.php','_self')</script>";
+  	}
+  
+  }else{
+  	echo "<script>alert('Error: Another User is Using The same I.D. Please Contact System Administrator')</script>";
   }
 }
 

@@ -12,18 +12,12 @@ if(isset($_POST['btn_save']))
 	$days_applied=$_POST['days_applied'];
 	$from_date=$_POST['from_date'];
 	$to_date=$_POST['to_date'];
-	$yesno_commutation =$_POST['yesno_commutation'];
+	$commutation =$_POST['yesno_commutation'];
 
 
-		//update basic info
+	$sql = "update emp_leave set file_date=?, leave_type=?, inout_ph=?, place=?, days_applied=?, from_date=?, to_date=?, commutation=? where id=?";
 
-		// $sql = "update emp_leave set file_date=?, leave_id=? inout_ph=?, place=?, days_applied=?, from_date=?, to_date=?, commutation=? where id=? and agencyid=?";
-
-		// $params = array("$file_date","$leave_id","$inout_ph","$place","$days_applied","$from_date","$to_date","$yesno_commutation","$id","$agencyid");
-
-	$sql = "update emp_leave set leave_id=? where id=?";
-
-	$params = array("$leave_id", "$id");
+	$params = array("$file_date", "$leave_id", "$inout_ph", "$place", "$days_applied","$from_date","$to_date", "$commutation", "$id");
 
 	sqlsrv_query($conn, $sql, $params);
 
@@ -34,9 +28,9 @@ if(isset($_POST['btn_save']))
 		$sick_illness = $_POST['sick_illness'];
 		$yesno_hospital = $_POST['yesno_hospital'];
 
-		$sql = "update sick_leave set inout_hospital=?, illness=? where id=? and agencyid=?";
+		$sql = "update sick_leave set f_key=?, leave_idinout_hospital=?, illness=? where file_id=?";
 
-		$params = array("$yesno_hospital","$sick_illness","$id","$agencyid");
+		$params = array("$yesno_hospital","$sick_illness","$id");
 		sqlsrv_query($conn, $sql, $params);
 	}
 
@@ -44,8 +38,8 @@ if(isset($_POST['btn_save']))
 	{
 
 		$master_bar=$_POST['master_bar'];
-		$sql = 'insert into study_leave (agencyid,master_bar) values (?,?)';
-		$params = array("$agencyid","$master_bar");
+		$sql = 'update study_leave set master_bar=? where file_id = ?';
+		$params = array("$master_bar","$id");
 		sqlsrv_query($conn, $sql, $params);
 	}
 
@@ -71,8 +65,9 @@ if(isset($_POST['btn_save']))
 			$yesno_other=$_POST['yesno_other'];
 		}
 		
-		$sql = 'insert into other_leave (agencyid,others,monetization_terminal) values (?,?,?)';
-		$params = array("$agencyid","$txt_others","$yesno_other");
+
+		$sql = 'update other_leave set others=?, monetization_terminal=? where file_id=?';
+		$params = array("$txt_others","$yesno_other",$id);
 		sqlsrv_query($conn, $sql, $params);
 	}
 

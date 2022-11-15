@@ -3,6 +3,7 @@
 session_start();
 include "scripts\connect.php";
 include "layouts\layout_sidebar.php";
+include "scripts\kick.php";
 //error_reporting(E_ALL ^ E_NOTICE);
 
 $uid=$_GET['uid']; // get link value
@@ -45,6 +46,11 @@ if($result = sqlsrv_query($conn, $sql))
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+          <?php
+          if($_SESSION['userlevel']<3){
+            echo '<li class="breadcrumb-item"><a href="employee-summary.php?uid='.$uid.'">Employee Summary</a></li>';
+          }
+          ?>
           <li class="breadcrumb-item">Updating Records of Employee ID: <?php echo $uid; ?></li>
         </ol>
       </nav>
@@ -180,7 +186,6 @@ if($result = sqlsrv_query($conn, $sql))
                     <input type="date" class="form-control" name="m_bday" value="<?php if(isset($m_bday)){ echo $m_bday; }?>">
                   </div>
                 </div>
-                 
                   <div class="row mb-12">
                   <div class="col-sm-10">
                   </div>
@@ -189,7 +194,6 @@ if($result = sqlsrv_query($conn, $sql))
                     <input type="button" class='btn btn-danger' value='-' onclick='minusChild()'>
                   </div>
                 </div>
-
                 <div class="row mb-10">
                   <div class="col-sm-8">
                     <label><b>Child Name</b></label>
@@ -239,7 +243,7 @@ if($result = sqlsrv_query($conn, $sql))
                       ?>
                   </div>
                 </div>
-
+                <br><br>
                 <div class="row mb-3">
                   
                   <div class="col-sm-11 text-center">

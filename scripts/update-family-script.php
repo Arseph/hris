@@ -119,7 +119,16 @@ if(isset($_POST['update_family']))
 
     
         echo '<script>alert("Record Successfully Updated")</script>';
-        // echo "<script>window.open('index.php','_self')</script>";
+        
+        if($_SESSION['userlevel'] == 3 )
+            {
+              echo "<script>window.open('index.php','_self')</script>";
+            }
+            
+            if(($_SESSION['userlevel']==1)||($_SESSION['userlevel']==2))
+            {
+              echo "<script>window.open('employee-summary.php?uid=".$uid."','_self')</script>";
+            }
     
         
   }

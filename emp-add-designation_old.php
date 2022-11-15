@@ -89,6 +89,7 @@ include "scripts\connect.php";
   var element = document.getElementById("span_nonperm");
   element.classList.add("hide_element");
   }
+
 </script>
 
   <main id="main" class="main">
@@ -116,10 +117,6 @@ include "scripts\connect.php";
             <div class="card-body">
 
           <form method="post">
-          <?php
-            // include "scripts/emp-add-designation-script2.php";
-            
-          ?>    
               <br>
               <label><B>From: </B></label>
               <input type='date' class='form-control' name='entry_date' value='<?php if(isset($_POST['entry_date']))

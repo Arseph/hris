@@ -10,39 +10,43 @@ if(isset($_POST['btn_save']))
 	$uid = $_GET['uid']; //uid
 	
 	$from_date = $_POST['from_date']; //from date
-
-
-    //to present check validation
-	$sql = "select * from emp_designation where agencyid='$uid' and void='1'";
-	$param = array();
-	$option = array("Scrollable" => SQLSRV_CURSOR_KEYSET);
-
-	$stmt = sqlsrv_query($conn, $sql, $param, $option);
-	$counter = sqlsrv_num_rows($stmt);
-	
-	if($counter>0)
-	{
-		$row=sqlsrv_fetch_array($stmt);
-
-		if($row['exit_date']=="To Present")
-		{
-		    $dupe_present++;
-		}
-	}
 		
 
 
 	if($_POST['radio_active']=='1') //to date
 	{
-		$to_date = "To Present";
+		//to present check validation
+		$sql = "select * from emp_designation where agencyid='$uid' and void='1' and exit_date='To Present'";
+		$param = array();
+		$option = array("Scrollable" => SQLSRV_CURSOR_KEYSET);
 
-	}elseif($_POST['radio_active']=='0'){
+		$stmt = sqlsrv_query($conn, $sql, $param, $option);
+		$counter = sqlsrv_num_rows($stmt);
+		
+		echo "counter: ".$counter;
+		
+		if($counter>0)
+		{
+			$dupe_present++;
+
+		}
+
+		if($counter==0){
+			$to_date = "To Present";
+		}
+
+		
+
+	}
+
+	if($_POST['radio_active']=='0')
+	{
 
 		$to_date = $_POST['to_date'];
 	}
 
 	//check if from doh
-	if(($dupe_present>0)&&($to_date=='To Present'))
+	if($dupe_present>0)
 	{
 		echo "<script>alert('Error: Another Entry was already set to TO PRESENT')</script>";  
 		echo "<script>window.open('emp-add-designation.php?uid=".$uid."','_self')</script>";
@@ -128,7 +132,6 @@ if(isset($_POST['btn_save']))
 				$doh_stmt = sqlsrv_query($conn,$doh_sql,$params);
 				echo "<script>alert('Record Successfully Added')</script>";
 
-				//error here
 				echo "<script>window.open('emp-designation-history.php?uid=".$uid."','_self')</script>";
 			}else{
 				echo "<script>alert('".$err_msg."')</script>";  
@@ -145,6 +148,8 @@ if(isset($_POST['btn_save']))
 			$params = array($uid,$doh12,$mstation,$dstation,$from_date,$to_date,$nondoh_position,$nondoh_status,$nondoh_salary,"1");
 			$doh_stmt = sqlsrv_query($conn,$doh_sql,$params);
 			echo "<script>alert('Record Successfully Added')</script>";
+			
+
 			echo "<script>window.open('emp-designation-history.php?uid=".$uid."','_self')</script>";
 		}
 	}

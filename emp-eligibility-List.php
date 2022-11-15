@@ -2,6 +2,8 @@
 session_start();
 $user_id=$_GET['uid'];
 include "layouts\layout_sidebar.php";
+include "scripts\kick.php";
+
 $get_user = "select * from emp_basic where agencyid='$user_id'";
 $user_stmt = sqlsrv_query($conn,$get_user);
 $row=sqlsrv_fetch_array($user_stmt);
@@ -15,8 +17,18 @@ $row=sqlsrv_fetch_array($user_stmt);
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+          <?php
+          if($_SESSION['userlevel']<3)
+          {
+            echo '<li class="breadcrumb-item"><a href="adm-master-list.php">Employee Master List</a></li>';
+
+            echo '<li class="breadcrumb-item"><a href="employee-summary.php?uid='.$user_id.'">Employee Summary</a></li>';
+
+
+          }
+          ?>
           <li class="breadcrumb-item active">Employee Eligibility List</li>
-          <li class="breadcrumb-item"><?php echo $row['firstname']." ".$row['surname']; ?></li>
+          
         </ol>
       </nav>
     </div><!-- End Page Title -->

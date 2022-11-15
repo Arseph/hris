@@ -2,25 +2,22 @@ c<?php
 session_start();
 $user_id=$_SESSION['user_id'];
 include "layouts\layout_sidebar.php";
+include "scripts\admin-check.php";
 $get_user = "select * from emp_basic where agencyid='$user_id'";
 $get_stmt = sqlsrv_query($conn,$get_user);
 $get_row=sqlsrv_fetch_array($get_stmt);
 $user_fname = $get_row['firstname'];
 $user_sname = $get_row['surname'];
-// error_reporting(0);
-// ini_set('display_errors', 0);
-
 ?>
 
   <main id="main" class="main">
   <form method="post">
     <div class="pagetitle">
-      <h1>Employee Designation History</h1>
+      <h1>Employee Master List</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item">Employee Designation History</li>
-          <li class="breadcrumb-item active"><?php echo $user_fname." ".$user_sname; ?></li>
+          <li class="breadcrumb-item">Employee Master List</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -30,9 +27,9 @@ $user_sname = $get_row['surname'];
 
          <div class="card">
             <div class="card-body">
-              <h5 class="card-title">Active Employee's Master list</h5>
+              <br>
               <?php
-              echo "<a href='emp-add-designation.php?uid=".$user_id."' class='btn btn-primary'>Add New Designation</a>";
+              echo "<a href='addemp.php' class='btn btn-primary'>Create New Employee Account</a>";
               ?>
                 <table id="tableInfo" class="table table-borderless datatable">
                     <thead>
@@ -44,12 +41,14 @@ $user_sname = $get_row['surname'];
                         <th scope='col'>Middle Name</th>
                         <th scope='col'>Designated Station</th>
                         <th scope='col'>Employment Status</th>
+                        <th scope='col'>Active Status</th>
+                        
                       </tr>
                     </thead>
                     <tbody>
                     <?php
                       //get max file id
-                      $sql = "select agencyid from HR_INFO where active='1'";
+                      $sql = "select * from HR_INFO where active!='-'";
                       $stmt = sqlsrv_query($conn, $sql);
 
                       
@@ -57,6 +56,7 @@ $user_sname = $get_row['surname'];
                         {
                             //uid
                             $agencyid=$row['agencyid'];
+                            $emp_active = $row['active'];
 
                             $get_data = "select * from emp_basic where agencyid='$agencyid'";
 
@@ -72,9 +72,9 @@ $user_sname = $get_row['surname'];
                             if($result>0)
                             {
                                 //name
-                                $surname = $data_row['surname'];
+                                $surname = utf8_decode($data_row['surname']);
                                 $firstname = $data_row['firstname'];
-
+                                
                                 if(isset($data_row['middlename']))
                                 {
                                   $middlename = $data_row['middlename']; 
@@ -146,6 +146,26 @@ $user_sname = $get_row['surname'];
                               }else{
                                 echo "<td><b style='color:red;'>".$dstation."</b></td>";
                                 echo "<td><b style='color:red;'>".$status."</b></td>";
+                              }
+
+                              if($emp_active=='1'){
+                               echo "<td><b style='color:green;'>Active</b></td>"; 
+                              }
+
+                              if($emp_active=='2'){
+                               echo "<td><b style='color:red;'>End of Contract</b></td>"; 
+                              }
+
+                              if($emp_active=='2'){
+                               echo "<td><b style='color:red;'>End of Contract</b></td>"; 
+                              }
+
+                              if($emp_active=='3'){
+                               echo "<td><b style='color:red;'>Retired</b></td>"; 
+                              }
+
+                              if($emp_active=='4'){
+                               echo "<td><b style='color:red;'>Awol</b></td>"; 
                               }
                               
 

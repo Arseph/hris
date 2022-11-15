@@ -2,6 +2,7 @@
 session_start();
 include "layouts\layout_sidebar.php";
 include "scripts\connect.php";
+include "scripts\kick.php";
 $uid=$_GET['uid'];
 $id=$_GET['id'];
 
@@ -45,15 +46,21 @@ $emp_scholarship = $data_row['scholarship'];
   <main id="main" class="main">
   <form method="post">
     <div class="pagetitle">
-      <h1>Add Bachelor's Degree Level Education</h1>
+      <h1>Update Bachelor's Degree Level Education</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
           <?php
+          if($_SESSION['userlevel']<3){
+            echo '<li class="breadcrumb-item"><a href="employee-summary.php?uid='.$uid.'">Employee Summary</a></li>';
+          }
+          ?>
+
+          <?php
            echo "<li class='breadcrumb-item'><a href='emp-education-history.php?uid=".$uid."'>Education History</a></li>";
           ?>
 
-          <li class="breadcrumb-item active">Add New Bachelor's Level Education</li>
+          <li class="breadcrumb-item active">Update Bachelor's Level Education</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->

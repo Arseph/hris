@@ -2,12 +2,15 @@
 session_start();
 include "scripts\connect.php";
 include "layouts\layout_sidebar.php";
+
 //error_reporting(E_ALL ^ E_NOTICE);
 ?>
 
 <?php
 
 $uid=$_GET['uid']; // get link value
+include "scripts\kick.php";
+
 
 $sql = "select top 1 * from emp_basic where agencyid='$uid' order by id desc";
 
@@ -45,6 +48,11 @@ if($result = sqlsrv_query($conn, $sql))
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+          <?php
+          if($_SESSION['userlevel']<3){
+            echo '<li class="breadcrumb-item"><a href="employee-summary.php?uid='.$uid.'">Employee Summary</a></li>';
+          }
+          ?>
           <li class="breadcrumb-item active">Updating Basic info of Employee ID: <?php echo $agencyid; ?></li>
         </ol>
       </nav>

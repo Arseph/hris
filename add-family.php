@@ -4,6 +4,7 @@ session_start();
 include "scripts\connect.php";
 include "layouts\layout_sidebar.php";
 //error_reporting(E_ALL ^ E_NOTICE);
+include "scripts\kick.php";
 
 ?>
 
@@ -14,6 +15,16 @@ include "layouts\layout_sidebar.php";
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+          <?php
+
+            if($_SESSION['userlevel']<3){
+              echo'
+              <li class="breadcrumb-item"><a href="adm-master-list.php">Employee Master List</a></li>
+              <li class="breadcrumb-item"><a href="employee-summary.php?uid='.$agencyid.'">Employee Data Summary</a></li>
+              ';
+            }
+
+          ?>
           <li class="breadcrumb-item">Add family Information</li>
         </ol>
       </nav>
@@ -35,58 +46,10 @@ include "layouts\layout_sidebar.php";
                   <div class="col-sm-10">
                     <select name="sel_employee" class="form-select">
                        
-                        <?php
+                    <?php
 
-                    if ($_SESSION['userlevel']<3)
-                    {
-                      echo "<option value='0' Selected>- Select -</option>";
-
-                      $sql_empname = "select * from dbo.emp_basic where firstname<>'admin' order by surname";
-
-                      $result = sqlsrv_query($conn, $sql_empname);
-                      
-
-                      while($row = sqlsrv_fetch_array($result))
-                      {
-                        $agencyid = $row['agencyid'];
-                       
-                        $checkaddresss_sql= "select * from emp_family where agencyid='$agencyid'";
-                                                $paramm = array();
-                        $options = array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
-                        $address_result = sqlsrv_query( $conn, $checkaddresss_sql , $paramm, $options);
-                        $count_address = sqlsrv_num_rows( $address_result );
-
-
-                         if($count_address<1)
-                         {
-
-                            $empsurname = $row['surname'];
-                            $empfname = $row['firstname'];
-                            $empmname = $row['middlename'];
-
-                            if ($empmname!="")
-                            {
-                              $emp_fullname = $empsurname.", ".$empfname." ".$empmname.".";
-                            } 
-                            else 
-                            {
-                              $emp_fullname = $empsurname.", ".$empfname;
-                            }
-
-                            if($_POST['sel_employee'] == $agencyid)
-                            {
-                              echo "<option value='".$agencyid."' selected>".$emp_fullname."</option>";
-                            }
-                            else
-                            {
-                               echo "<option value='".$agencyid."' >".$emp_fullname."</option>";
-                            }
-                          }
-
-                      }
-
-                    }else{
-                      $agencyid=$_SESSION['user_id'];
+                    
+                      $agencyid=$_GET['uid'];
                       $get_address_sql= "select * from emp_basic where agencyid='$agencyid'";
                       $result = sqlsrv_query($conn, $get_address_sql);
                       $row = sqlsrv_fetch_array($result);
@@ -112,7 +75,6 @@ include "layouts\layout_sidebar.php";
                             {
                                echo "<option value='".$agencyid."' >".$emp_fullname."</option>";
                             }
-                    }
 
                    ?>
                     </select>

@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "layouts\layout_sidebar.php";
+include "scripts\kick.php";
 $uid=$_GET['uid'];
 ?>
 <style type="text/css">
@@ -30,6 +31,12 @@ $uid=$_GET['uid'];
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+          <?php
+          if($_SESSION['userlevel']<3){
+            echo '<li class="breadcrumb-item"><a href="employee-summary.php?uid='.$uid.'">Employee Summary</a></li>';
+          }
+          ?>
+
           <?php
            echo "<li class='breadcrumb-item'><a href='emp-education-history.php?uid=".$uid."'>Education History</a></li>";
           ?>

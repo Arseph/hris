@@ -69,7 +69,7 @@
         include "scripts/audit_emp_update_eligibility.php";
 
         echo '<script>alert("Record Successfully Updated")</script>';
-	    echo "<script>window.open('emp-eligibility-list.php?uid=".$row['agencyid']."','_self')</script>";
+	    echo "<script>window.open('emp-eligibility-list.php?uid=".$user_id."','_self')</script>";
 		}
 		else
 		{

@@ -12,8 +12,8 @@ if(isset($_POST['btn_save']))
 	$radio_grad=$_POST['radio_grad'];
 	$txt_units=$_POST['txt_units'];
 
-	 $sql = "update emp_education_bachelors set school=?,course=?,from_year=?,to_year=?,graduate=?,units=?,scholarship=?,void=? where agencyid=?";
-	 $params= array($txt_school,$txt_course,$txt_from,$txt_to,$radio_grad,$txt_units,$txt_scholarship,"1",$uid);
+	 $sql = "update emp_education_bachelors set school=?,course=?,from_year=?,to_year=?,graduate=?,units=?,scholarship=?,void=? where id=?";
+	 $params= array($txt_school,$txt_course,$txt_from,$txt_to,$radio_grad,$txt_units,$txt_scholarship,"1",$id);
 
 	 sqlsrv_query($conn,$sql,$params);
 

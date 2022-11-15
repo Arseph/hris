@@ -90,12 +90,22 @@ if(isset($_POST['update_identification']))
 
     $s_go = sqlsrv_query($conn, $query, $params);
 
-        // echo "<span style='color: green;'><b>Record Successfully updated!</b></span><br><br>";
 
     include "scripts/audit_emp_update_identification.php";
 
     echo '<script>alert("Record Successfully Updated")</script>';
-    echo "<script>window.open('index.php','_self')</script>";
+                
+
+            if($_SESSION['userlevel'] == 3 )
+            {
+              echo "<script>window.open('index.php','_self')</script>";
+            }
+            
+            if(($_SESSION['userlevel']==1)||($_SESSION['userlevel']==2))
+            {
+              echo "<script>window.open('employee-summary.php?uid=".$uid."','_self')</script>";
+            }
+    
     
         
   }

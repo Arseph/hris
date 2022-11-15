@@ -3,6 +3,7 @@ session_start();
 
 include "layouts\layout_sidebar.php";
 include "scripts\connect.php";
+include "scripts\admin-check.php";
 
 $get_div_sql="select * from munit where div_void='1'";
 $div_stmt = sqlsrv_query($conn,$get_div_sql);

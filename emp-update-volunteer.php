@@ -2,6 +2,7 @@
 session_start();
 include "scripts\connect.php";
 include "layouts\layout_sidebar.php";
+include "scripts\kick.php";
 //error_reporting(E_ALL ^ E_NOTICE);
 $uid = $_GET['uid'];
 $id = $_GET['id'];
@@ -27,6 +28,11 @@ $position=  $data_row['position'];
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+          <?php
+          if($_SESSION['userlevel']<3){
+            echo '<li class="breadcrumb-item"><a href="employee-summary.php?uid='.$uid.'">Employee Summary</a></li>';
+          }
+          ?>
           <li class="breadcrumb-item"><a href="<?php echo 'emp-volunteer-list.php?uid='.$uid; ?>">Volunteer Work History</a></li>
           <li class="breadcrumb-item">Update Volunteer Record</li>
         </ol>

@@ -3,9 +3,11 @@
 
 if(isset($_POST['update_miscinfo']))
 {	
-  		$errorcount=0;
-  		$errmsg="please fillout:<br>";
-  		$new_record_version=$record_version+1;
+		$id = $_GET['id'];
+		
+  	$errorcount=0;
+  	$errmsg="please fillout:<br>";
+  	$new_record_version=$record_version+1;
 
 
   		$hobbies=$_POST['txthobby'];
@@ -92,17 +94,26 @@ if(isset($_POST['update_miscinfo']))
 		  	$a11=$_POST['a11'];
 	  	}
 
-    $query = "update emp_miscinfo set hobbies=?,nar=?,assoc_member=?,reff=?,q1=?,a1=?,q2=?,a2=?,q3=?,a3=?,q4=?,a4=?,q5=?,a5=?,q6=?,a6=?,q7=?,a7=?,q8=?,a8=?,q9=?,a9=?,q10=?,a10=?,q11=?,a11=? where agencyid = '$agencyid'";
+    $query = "update emp_miscinfo set hobbies=?,nar=?,assoc_member=?,reff=?,q1=?,a1=?,q2=?,a2=?,q3=?,a3=?,q4=?,a4=?,q5=?,a5=?,q6=?,a6=?,q7=?,a7=?,q8=?,a8=?,q9=?,a9=?,q10=?,a10=?,q11=?,a11=? where id = '$id'";
 
     $params= array($hobbies, $nar, $assoc, $reff, $q1, $a1, $q2, $a2, $q3, $a3, $q4, $a4, $q5, $a5, $q6, $a6, $q7, $a7, $q8, $a8, $q9, $a9, $q10, $a10, $q11, $a11, $agencyid);
 
     
     $stmt = sqlsrv_query($conn, $query, $params);
 
-    include "scripts/audit_emp_update_miscinfo.php";
+     include "scripts/audit_emp_update_miscinfo.php";
     
     echo '<script>alert("Record Successfully Updated")</script>';
-	 echo "<script>window.open('index.php','_self')</script>";
+    
+	if($_SESSION['userlevel'] == 3 )
+	{
+		 echo "<script>window.open('index.php','_self')</script>";
+  }
+  
+  if(($_SESSION['userlevel']==1)||($_SESSION['userlevel']==2))
+  {
+   echo "<script>window.open('employee-summary.php?uid=".$uid."','_self')</script>";
+  }
 
 }
 
