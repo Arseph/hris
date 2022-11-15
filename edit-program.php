@@ -1,7 +1,8 @@
 <?php
 session_start();
 include "layouts\layout_sidebar.php";
-
+include "scripts\admin-check.php";
+include "scripts\admin-check.php";
 $prog_code=$_GET['prog_code'];
 
 $sql= "select * from ref_program where prog_code = '$prog_code'";

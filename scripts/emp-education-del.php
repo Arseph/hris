@@ -19,6 +19,18 @@ if($edu_lvl=='maphd')
 }
 
 
+//Vocational education delete button
+if($edu_lvl=='vocational')
+{
+	$delete_sql = "update emp_education_vocational set void=? where agencyid=? and id=?";
+	$params = array(0,$uid,$id);
+	$del_stmt = sqlsrv_query($conn,$delete_sql,$params);
+
+	 echo '<script>alert("Record Deleted")</script>';
+     echo "<script>window.open('../emp-education-history.php?uid=".$uid."','_self')</script>";
+}
+
+
 //bachelor's education delete button
 if($edu_lvl=='bachelors')
 {

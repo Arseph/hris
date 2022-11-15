@@ -1,6 +1,8 @@
 <?php
 session_start();
 include "layouts\layout_sidebar.php";
+include "scripts\kick.php";
+
 $user_id = $_GET['uid'];
 
 ?>
@@ -246,7 +248,21 @@ $user_id = $_GET['uid'];
                          while($position_row=sqlsrv_fetch_array($position_stmt)){
                           $pos_code=$position_row['pos_code'];
                           $position=$position_row['EmpPosition'];
-                          echo "<option value='$pos_code'>".$position."</option>";
+                          $item_no=$position_row['itemno'];
+
+                          //check if position is already taken
+                          $params = array();
+                          $options = array("Scrollable" => SQLSRV_CURSOR_KEYSET);
+
+                          $permpos_dupe = "select * from emp_designation where void='1' and position='$pos_code' and exit_date='To Present'";
+                          $permpos_stmt = sqlsrv_query($conn, $permpos_dupe, $params, $options);
+                          $permpos_count = sqlsrv_num_rows($permpos_stmt);
+
+                            if($permpos_count<1)
+                            {
+                              echo "<option value='$pos_code'>".$position." (Item No: ".$item_no.")</option>"; 
+                            }
+
                          }
 
                          ?>

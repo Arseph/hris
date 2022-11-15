@@ -1,6 +1,8 @@
 <?php
 session_start();
 include "layouts\layout_sidebar.php";
+include "scripts\admin-check.php";
+
 $id = $_GET['id'];
 $find_elig = "select * from ref_eligibility where id = '$id'";
 $elig_stmt = sqlsrv_query($conn,$find_elig);

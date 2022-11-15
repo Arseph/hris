@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "layouts\layout_sidebar.php";
+include "scripts\kick.php";
 $uid=$_GET['uid'];
 $emp_record_version=$_GET['record_version'];
 $id=$_GET['id'];
@@ -51,15 +52,21 @@ while ($emp_row = sqlsrv_fetch_array($find_stmt))
   <main id="main" class="main">
   <form method="post">
     <div class="pagetitle">
-      <h1>Add Primary Level Education</h1>
+      <h1>Update Secondary Level Education</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
           <?php
+          if($_SESSION['userlevel']<3){
+            echo '<li class="breadcrumb-item"><a href="employee-summary.php?uid='.$uid.'">Employee Summary</a></li>';
+          }
+          ?>
+
+          <?php
            echo "<li class='breadcrumb-item'><a href='emp-education-history.php?uid=".$uid."'>Education History</a></li>";
           ?>
 
-          <li class="breadcrumb-item active">Add New Primary Education</li>
+          <li class="breadcrumb-item active">Update Secondary Education</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->

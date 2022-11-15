@@ -22,6 +22,7 @@ include "connect.php";
     $new_radiocitizen = $_POST['radiocitizen'];
     $new_radiocitizenby = $_POST['radiocitizenby'];
     $new_cid = $_POST['cid'];
+    
     if (!isset($new_cid)){
       $new_cid="";
     }
@@ -100,11 +101,17 @@ include "connect.php";
           //   $stmt = sqlsrv_query($conn, $query, $params);
 
           // }
-
-
-            echo '<script>alert("Record Successfully Updated")</script>';
-            echo "<script>window.open('index.php','_self')</script>";
-        }
+          echo '<script>alert("Record Successfully Updated")</script>';
+            
+            if($_SESSION['userlevel'] > 2 )
+            {
+              echo "<script>window.open('index.php','_self')</script>";
+            }
+            else
+            {
+              echo "<script>window.open('employee-summary.php?uid=".$uid."','_self')</script>";
+            }
+          }
     }
   }
 ?>

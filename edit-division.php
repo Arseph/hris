@@ -1,6 +1,8 @@
 <?php
 session_start();
 include "layouts\layout_sidebar.php";
+include "scripts\admin-check.php";
+
 $division_code=$_GET['div_code'];
 $sql1= "select * from munit where div_code = '$division_code'";
 $div_stmt = sqlsrv_query($conn,$sql1);

@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "layouts\layout_sidebar.php";
+include "scripts\kick.php";
 $user_id = $_GET['uid'];
 $id = $_GET['id'];
 
@@ -250,17 +251,38 @@ $get_row = sqlsrv_fetch_array($get_stmt);
                         <option value="0">- Select -</option>
                          <?php 
 
-                         $getposition_sql = "select * from select_position where permanent='1' order by EmpPosition asc";
+                         $getposition_sql = "select * from select_position where permanent='1' and pos_void='1' order by EmpPosition asc";
                          $position_stmt = sqlsrv_query($conn,$getposition_sql);
 
-                         while($position_row=sqlsrv_fetch_array($position_stmt)){
+                         while($position_row=sqlsrv_fetch_array($position_stmt))
+                         {
                           $pos_code=$position_row['pos_code'];
                           $position=$position_row['EmpPosition'];
-                          echo "<option value='$pos_code' ";
-                          if(($get_row['status']=='1')&&($get_row['position']==$pos_code)){
-                            echo "selected";
-                          }
-                          echo " >".$position."</option>";
+                         
+
+                             //check if position is already taken
+                            $params = array();
+                            $options = array("Scrollable" => SQLSRV_CURSOR_KEYSET);
+
+                            $permpos_dupe = "select * from emp_designation where void='1' and position='$pos_code' and exit_date='To Present'";
+                            $permpos_stmt = sqlsrv_query($conn, $permpos_dupe, $params, $options);
+                            $permpos_count = sqlsrv_num_rows($permpos_stmt);
+
+
+
+
+                            if($permpos_count<1)
+                            {
+                              echo "<option value='$pos_code' ";
+                              
+                              if(($get_row['status']=='1')&&($get_row['position']==$pos_code))
+                              {
+                                echo "selected";
+                              }
+
+                              echo " >".$position."</option>";
+                            }
+
                          }
 
                          ?>

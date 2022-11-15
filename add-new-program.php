@@ -1,6 +1,7 @@
 <?php
 session_start();
 include "layouts\layout_sidebar.php";
+include "scripts\admin-check.php";
 $get_programs = "select * from mstation";
 $program_stmt = sqlsrv_query($conn,$get_programs);
 

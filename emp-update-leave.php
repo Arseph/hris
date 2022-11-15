@@ -6,8 +6,8 @@ session_start();
 include "layouts\layout_sidebar.php";
 include "scripts\connect.php";
 $uid=$_SESSION['user_id'];
-$id=102;
-// $id=$_GET['id'];
+//$id=102;
+$id=$_GET['id'];
 
 if (!isset($_SESSION['user_id']))
 {
@@ -18,11 +18,14 @@ if (!isset($_SESSION['user_id']))
 
 
   //find latest version record
- $leavedata_sql ="select * FROM emp_leave WHERE id='$id' and agencyid='$uid'";
+ $leavedata_sql ="select * FROM emp_leave WHERE id='$id'";
 $result = sqlsrv_query($conn, $leavedata_sql);
 $row = sqlsrv_fetch_array($result);
+
+
+
 $file_date=$row['file_date'];
-$db_leave_id=$row['leave_id'];
+$db_leave_id=$row['leave_type'];
 $place=$row['place'];
 $inoutph=$row['inout_ph'];
 $days_applied=$row['days_applied'];
@@ -40,7 +43,20 @@ if($db_leave_id==3)
  $inout_hospital=$row['inout_hospital'];
  $illness=$row['illness'];
 }
+
+
+if($db_leave_id==14)
+{
+ $others_sql = "select * from other_leave where file_id='$id'";
+ $result = sqlsrv_query($conn, $others_sql);
+ $row = sqlsrv_fetch_array($result);
+
+ $others=$row['others'];
+ $mon_terminal=$row['monetization_terminal'];
+}
 ?>
+
+
 
 
 
@@ -249,7 +265,7 @@ width: 30%;
                         echo"><b>".$leave_type."</b>".$leave_details."<br>";
                     }
                   ?>
-                  <input type='text' id='txt_others' class="form-control hide_element"<?php if(isset($_POST['txt_others'])){ echo $_POST['txt_others']; }?> name='txt_others'>
+                  <input type='text' id='txt_others' class="form-control <?php if($db_leave_id!='14'){ echo "hide_element"; } ?>" value="<?php if($db_leave_id=='14'){ echo $others; } ?>" name='txt_others'>
                 </div>
                 <br>
                 <h5 class="card-title"><b>Details of Leave</b></h5>
@@ -291,9 +307,9 @@ width: 30%;
                 <br>
                 <div>
                   <b>Number of working Days Applied for: </b><br>
-                  <input type="number" class="form-control" name="days_applied" value='<?php echo $days_applied; ?>' required><br>
-                  <b>From: </b><Input type="date" class="form-control" name="from_date" value='<?php echo $from_date; ?>' required><br> 
-                    <b>To: </b><Input type="date" class="form-control" name="to_date" value='<?php echo $to_date; ?>' required> 
+                  <input type="number" class="form-control" name="days_applied" value="<?php echo $days_applied; ?>" required><br>
+                  <b>From: </b><Input type="date" class="form-control" name="from_date" value="<?php echo $from_date; ?>" required>testaB<br>
+                    <b>To: </b><Input type="date" class="form-control" name="to_date" value="<?php echo $to_date; ?>" required> 
                 </div>
                 <div id='study_leave' class='hide_element'>
                   <br>
@@ -302,10 +318,10 @@ width: 30%;
                   <span><input type='radio' name='master_bar' value="1">BAR/Board Examination Review</span>
                 </div>
                 <br>
-                <div id='other_leave' class='hide_element'>
+                <div id='other_leave' class='<?php if($db_leave_id!='14'){ echo "hide_element"; } ?>'>
                   <b>Other purpose</b><br>
-                  <span><input type='radio' name='yesno_other' value='0'>Monetization of Leave Credits</span><br>
-                  <span><input type='radio' name='yesno_other' value='1'>Terminal Leave</span>
+                  <span><input type='radio' name='yesno_other' value='0' <?php if(($mon_terminal=='0')&&($db_leave_id=='14')) { echo "checked"; } ?>>Monetization of Leave Credits</span><br>
+                  <span><input type='radio' name='yesno_other' value='1' <?php if(($mon_terminal=='1')&&($db_leave_id=='14')) { echo "checked"; } ?>>Terminal Leave</span>
                 </div>
                 <br>
                 <div>

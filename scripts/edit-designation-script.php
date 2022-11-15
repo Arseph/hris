@@ -18,7 +18,7 @@ if(isset($_POST['btn_save']))
 	$stmt = sqlsrv_query($conn, $sql);
 	$row=sqlsrv_fetch_array($stmt);
 
-	$sql = "select * from emp_designation where agencyid='$uid' and id!='$id' and exit_date='To Present'";
+	$sql = "select * from emp_designation where agencyid='$uid' and id!='$id' and exit_date='To Present' and void='1'";
 	$stmt = sqlsrv_query($conn, $sql, $params, $options);
 
 	$count_dupe=sqlsrv_num_rows($stmt);

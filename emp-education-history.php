@@ -2,6 +2,9 @@
 session_start();
 include "scripts\connect.php";
 include "layouts\layout_sidebar.php";
+include "scripts\kick.php";
+
+
 $user_id=$_GET['uid'];
 $get_name_sql = "select * from emp_basic where agencyid = '$user_id'";
 $get_stmt = sqlsrv_query($conn,$get_name_sql);
@@ -19,6 +22,13 @@ $sname = $get_row['surname'];
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+          
+          <?php
+          if($_SESSION['userlevel']<3){
+            echo '<li class="breadcrumb-item"><a href="employee-summary.php?uid='.$user_id.'">Employee Summary</a></li>';
+          }
+          ?>
+          
           <li class="breadcrumb-item active">Education History</li>
           <li class="breadcrumb-item active"><?php echo $fname." ".$sname; ?></li>
         </ol>
@@ -29,12 +39,17 @@ $sname = $get_row['surname'];
         <div class="col-lg-12">
 
          <div class="card">
+          
             <div class="card-body">
               <br>
               <h4>Primary Level Education</h4>
-              
               <?php
-              echo "<a href='emp-add-primary.php?uid=".$user_id."' class='btn btn-primary'>Add New Primary Education</a>";
+
+                if($_SESSION['userlevel']<3){
+                  echo '<a class="btn btn-secondary" href="employee-summary.php?uid='.$user_id.'">Back</a><br><br>';
+                }
+
+                  echo "<a href='emp-add-primary.php?uid=".$user_id."' class='btn btn-primary'>Add New Primary Education</a>";
               ?>
                 <table class="table table-borderless datatable">
                     <thead>
@@ -104,7 +119,7 @@ $sname = $get_row['surname'];
 
               <br><h4>Secondary Level Education</h4>
                  <?php
-              echo "<a href='emp-add-secondary.php?uid=".$user_id."' class='btn btn-primary'>Add New Primary Education</a>";
+              echo "<a href='emp-add-secondary.php?uid=".$user_id."' class='btn btn-primary'>Add New Secondary Education</a>";
               ?>
                 <table class="table table-borderless datatable">
                     <thead>
@@ -229,9 +244,66 @@ $sname = $get_row['surname'];
                     </tbody>
                   </table>
 
+
+                  <br><h4>Vocational Level Education</h4>
+                  <?php
+              echo "<a href='emp-add-vocational.php?uid=".$user_id."' class='btn btn-primary'>Add New Vocational Level Education</a>";
+              ?>
+                <table class="table table-borderless datatable">
+                    <thead>
+                      <tr>
+                        <th class="fw-bold">Action</th>
+                        <th class="fw-bold">No.</th>
+                        <th scope="col">School</th>
+                        <th scope="col">From</th>
+                        <th scope="col">To</th>
+                        <th scope="col">Scholarship</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                   <?php
+                      //get max file id
+                      $vocational_sql = "select * from emp_education_vocational where agencyid='$user_id' and void='1'";
+                      $vocational_stmt = sqlsrv_query($conn, $vocational_sql, $params, $options);
+
+                      $vocational_count = sqlsrv_num_rows($vocational_stmt);
+
+                      if($vocational_count>0)
+                      {
+
+                        while($voc_row = sqlsrv_fetch_array($vocational_stmt))
+                        {
+                          echo "<td>
+                       <a href='emp-edit-vocational.php?uid=".$user_id."&id=".$voc_row['id']."' class='btn btn-success'><img src='assets/img/pen.svg'></a>
+
+                       <a href='scripts/emp-education-del.php?uid=".$user_id."&id=".$voc_row['id']."&edu_lvl=vocational' class='btn btn-danger'><img src='assets/img/trash.svg'></a>
+
+                       </td>";
+                        echo "<td>".$voc_row['id']."</td>";
+                        echo "<td>".$voc_row['school']."</td>";
+
+                        if($voc_row['graduate']=='1'){
+                         echo "<td style='color:blue;'><b>".$voc_row['from_year']."</b></td>";
+                         echo "<td style='color:blue;'><b>".$voc_row['to_year']."</b></td>"; 
+                        }else{
+                         echo "<td>".$voc_row['from_year']."</td>";
+                         echo "<td>".$voc_row['to_year']."</td>"; 
+                        }
+                        echo "<td>".$voc_row['scholarship']."</td>";
+                        echo '</tr>';
+                        }  
+                      }
+                      
+                     
+                      
+
+                    ?>
+                    </tbody>
+                  </table>
+
                   <br><h4>Master/Doctoral Level Education</h4>
                   <?php
-              echo "<a href='emp-add-maphd.php?uid=".$user_id."' class='btn btn-primary'>Add New Bachelor's Level Education</a>";
+              echo "<a href='emp-add-maphd.php?uid=".$user_id."' class='btn btn-primary'>Add New Master/Doctoral Level Education</a>";
               ?>
                 <table class="table table-borderless datatable">
                     <thead>

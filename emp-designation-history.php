@@ -1,13 +1,75 @@
-c<?php
+<?php
 session_start();
 $user_id=$_GET['uid'];
 include "layouts\layout_sidebar.php";
+include "scripts\kick.php";
+
 $get_user = "select * from emp_basic where agencyid='$user_id'";
 $user_stmt = sqlsrv_query($conn,$get_user);
 $row=sqlsrv_fetch_array($user_stmt);
 // error_reporting(0);
 // ini_set('display_errors', 0);
 
+
+session_start();
+
+if (isset($_POST['login']))
+{
+  $username = utf8_decode($_POST['username']);
+  $password = $_POST['password'];
+
+                        
+  $accountcheck_sql = "select * from user_accounts where username='$username' and pass='$password'";
+  $paramm = array();
+    $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
+    $stmt = sqlsrv_query( $conn, $accountcheck_sql , $paramm, $options);
+    
+    $total_account = sqlsrv_num_rows( $stmt );
+
+    echo $total_account;
+
+        if ($total_account > 0) 
+        {     
+
+            $row = sqlsrv_fetch_array($stmt);
+            $agencyid= $row['agencyid'];
+            $_SESSION['user_id'] = $agencyid;
+            $_SESSION['userlevel']  = $row['userlevel'];
+            
+
+             $userlvl_sql = "select top 1 * from emp_basic where agencyid='$agencyid' order by id desc";
+             $userlvl_stmt = sqlsrv_query($conn,$userlvl_sql);
+             $userlvl_row = sqlsrv_fetch_array($userlvl_stmt);
+             $_SESSION['firstname']  = $userlvl_row ['firstname'];
+           
+
+            //CHECK IF FIRST LOGIN
+            $new_check_sql = "select * from audit_trail where agencyid='$agencyid' and action_type='3'";
+            
+            $paramm = array();
+            $options =  array( "Scrollable" => SQLSRV_CURSOR_KEYSET );
+            $stmt = sqlsrv_query( $conn, $new_check_sql, $paramm, $options);
+            $find_verify = sqlsrv_num_rows( $stmt );
+
+            //IF FIRST LOGIN
+            if($find_verify==0)
+            {
+                include "audit_first_login.php";
+                
+            }
+            else
+            {
+                include "audit_login.php";
+              header('location:index.php');
+
+            }
+
+        }else{
+            $error_msg = '<br/><p style="color:red">incorrect username and/or password</p>';
+        }
+        
+
+}    
 ?>
 
   <main id="main" class="main">
@@ -17,9 +79,15 @@ $row=sqlsrv_fetch_array($user_stmt);
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+          <?php
+          if($_SESSION['userlevel']<3){
+            echo '<li class="breadcrumb-item"><a href="employee-summary.php?uid='.$user_id.'">Employee Summary</a></li>';
+          }
+          ?>
           <li class="breadcrumb-item">Employee Designation History</li>
           <li class="breadcrumb-item active"><?php echo $row['firstname']." ".$row['surname']; ?></li>
         </ol>
+
       </nav>
     </div><!-- End Page Title -->
     <section class="section">
@@ -36,7 +104,8 @@ $row=sqlsrv_fetch_array($user_stmt);
                     <thead>
                       <tr>
                         <th class="fw-bold">Action</th>
-                        <th class="fw-bold">Entry Date</th>
+                        <th class="fw-bold">From</th>
+                        <th class="fw-bold">To</th>
                         <th scope="col">Mother Station</th>
                         <th scope="col">Designated Station</th>
                         <th scope='col'>Position</th>
@@ -52,6 +121,7 @@ $row=sqlsrv_fetch_array($user_stmt);
                       $stmt = sqlsrv_query($conn, $sql, $params, $options);
                       $count_row = sqlsrv_num_rows($stmt);
                       
+
 
                       if($count_row>0)
                       {
@@ -86,6 +156,8 @@ $row=sqlsrv_fetch_array($user_stmt);
                           $timestamp=strtotime($row['entry_date']);
                           $entry_date= date("m-d-Y", $timestamp);
 
+                          $exit_date = $row['exit_date'];
+
                           echo "<td>
                           <a href='emp-edit-designation.php?uid=".$user_id."&id=".$id."' class='btn btn-success'><img src='assets/img/pen-fill.svg'></a>
 
@@ -95,6 +167,7 @@ $row=sqlsrv_fetch_array($user_stmt);
                           </td>";
 
                           echo "<td>".$entry_date."</td>";
+                           echo "<td>".$exit_date."</td>";
                           echo "<td><b style='color:blue;'>".$mstation."</b></td>";
                           echo "<td><b style='color:blue;'>".$dstation."</b></td>";
                           echo "<td><b>".$position."</b></td>";
@@ -107,6 +180,7 @@ $row=sqlsrv_fetch_array($user_stmt);
                     ?>
                     </tbody>
                   </table>
+
               </div><!-- End No Labels Form -->
 
             </div>

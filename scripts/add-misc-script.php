@@ -179,7 +179,13 @@ if(isset($_POST['save']))
 	 include "scripts/audit_emp_add_miscinfo.php";
 
 	    echo '<script>alert("Record Successfully Added")</script>';
-		echo "<script>window.open('index.php','_self')</script>";
+		
+		if($_SESSION['userlevel']<3)
+	  	{
+	  		echo "<script>window.open('employee-summary.php?uid=".$agencyid."','_self')</script>";
+	  	}else{
+	  		echo "<script>window.open('index.php','_self')</script>";
+	  	}
 	}
 	else{
   		echo "Some required fields have been left blank";

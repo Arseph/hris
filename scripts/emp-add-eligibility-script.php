@@ -28,9 +28,6 @@
 			$date_valid = "";
 		}
 
-
-
-
 		//find dupe
 		$find_dupe_sql = "select * from emp_eligibility where agencyid='$uid' and elig_type='$elig_type' and void='1'";
 		$paramm = array();
@@ -68,7 +65,7 @@
         include "scripts/audit_emp_add_eligibility.php";
 
         echo '<script>alert("Record Successfully Added")</script>';
-		echo "<script>window.open('emp-eligibility-list.php?uid=".$row['agencyid']."','_self')</script>";
+		echo "<script>window.open('emp-eligibility-list.php?uid=".$uid."','_self')</script>";
 		}
 		else
 		{

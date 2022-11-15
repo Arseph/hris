@@ -37,7 +37,7 @@ if(isset($_POST['btn_save']))
 
 		 include "scripts/audit_emp_update_primary.php";
 
-		 echo '<script>alert("Record Successfully Added")</script>';
+		 echo '<script>alert("Record Successfully Updated")</script>';
 	     echo "<script>window.open('emp-education-history.php?uid=".$uid."','_self')</script>";	
 
 	}else{

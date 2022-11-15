@@ -1,6 +1,8 @@
 <?php
 session_start();
 include "layouts\layout_sidebar.php";
+include "scripts\admin-check.php";
+
 $id= $_GET['id'];
 
 $get_data = "select * from ref_elig_main where id='$id'";
@@ -16,12 +18,12 @@ $data_ext = $data_row['name_ext'];
   <main id="main" class="main">
   <form method="post">
     <div class="pagetitle">
-      <h1>Add Eligibility</h1>
+      <h1>Update Eligibility</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
           <li class="breadcrumb-item"><a href="eligibility-list.php">Eligibility List</a></li>
-          <li class="breadcrumb-item active">Add Eligibility</li>
+          <li class="breadcrumb-item active">Update Eligibility</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->

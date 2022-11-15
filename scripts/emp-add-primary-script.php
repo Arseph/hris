@@ -38,7 +38,7 @@ if(isset($_POST['btn_save']))
 	 include "scripts/audit_emp_add_primary.php";
 
 	 echo '<script>alert("Record Successfully Added")</script>';
-     // echo "<script>window.open('emp-education-history.php?uid=".$uid."','_self')</script>";	
+     echo "<script>window.open('emp-education-history.php?uid=".$uid."','_self')</script>";	
 	}else{
 
 	echo '<script>alert("Error: Another Entry was already marked as graduate year")</script>';

@@ -4,9 +4,11 @@ session_start();
 include "scripts\connect.php";
 include "layouts\layout_sidebar.php";
 
+include "scripts\kick.php";
+
 $uid=$_GET['uid'];
 $id = $_GET['id'];
-$sql = "select * from emp_address where agencyid='$uid' and id='$id'";
+$sql = "select * from emp_address where agencyid='$uid'";
 
 if($result = sqlsrv_query($conn, $sql))
 {
@@ -46,6 +48,11 @@ if($result = sqlsrv_query($conn, $sql))
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+          <?php
+          if($_SESSION['userlevel']<3){
+            echo '<li class="breadcrumb-item"><a href="employee-summary.php?uid='.$uid.'">Employee Summary</a></li>';
+          }
+          ?>
           <li class="breadcrumb-item active">Updating the Address of <?php echo $uid; ?></li>
         </ol>
       </nav>

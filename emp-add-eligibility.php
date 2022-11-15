@@ -3,11 +3,7 @@ session_start();
 $user_id=$_GET['uid'];
 include "layouts\layout_sidebar.php";
 include "scripts\connect.php";
-
-
-
-
-
+include "scripts\kick.php";
 include "scripts/emp-add-eligibility-script.php"; 
 
 ?>
@@ -19,12 +15,18 @@ include "scripts/emp-add-eligibility-script.php";
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+          <?php
+          if($_SESSION['userlevel']<3){
+            echo '<li class="breadcrumb-item"><a href="employee-summary.php?uid='.$user_id.'">Employee Summary</a></li>';
+          }
+          ?>
+
           <li class="breadcrumb-item">
             <?php 
             echo "<a href='emp-eligibility-list.php?uid=".$user_id."'>Employee Eligibility List</a>";
             ?>            
           </li>
-         <li class="breadcrumb-item"><?php echo $row['firstname']." ".$row['surname']; ?></li>
+         <li class="breadcrumb-item">Update Eligibility List</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->

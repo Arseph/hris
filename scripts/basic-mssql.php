@@ -24,6 +24,7 @@ include "connect.php";
               $lastnum++;
               $year= date("Y");
               $agencyid=$year."-".$lastnum;
+              
           }
           
       }
@@ -126,11 +127,14 @@ include "connect.php";
 
           sqlsrv_query($conn, $account_sql, $account_params);
 
-          $hrinfo_sql ="insert into HR_INFO (agencyid,active,month_hired,day_hired,year_hired) values (?,?,?,?,?)";
-          $hire_month = date("m");
-          $hire_year = date("Y");
-          $hire_day = date("d");
-          $params = array("$agencyid","1","$hire_month","$hire_day","$hire_year");
+          $hrinfo_sql ="insert into HR_INFO (agencyid,active,date_hired,year_hired,day_hired,month_hired) values (?,?,?,?,?,?)";
+
+          $day_hired = date("d");
+          $year_hired = date("Y");
+          $month_hired = date("m");
+
+          $date_hired = date("Y-m-d");
+          $params = array("$agencyid","1","$date_hired","$year_hired","$day_hired","$month_hired");
 
           $hrinfo_stmt = sqlsrv_query($conn, $hrinfo_sql, $params);
 
@@ -139,7 +143,7 @@ include "connect.php";
           copy($source, $destination);
 
           echo '<script>alert("User Account Successfully Created")</script>';
-          echo "<script>window.open('index.php','_self')</script>";
+          // echo "<script>window.open('index.php','_self')</script>";
         }
 
       }else{

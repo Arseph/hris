@@ -1,7 +1,7 @@
 <?php
 session_start();
 include "layouts\layout_sidebar.php";
-
+include "scripts\admin-check.php";
 ?>
 <style type="text/css">
 

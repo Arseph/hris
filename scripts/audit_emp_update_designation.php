@@ -12,16 +12,9 @@
 
                 //specify data that got modified here
 
-
-
-
                 $affected_record = "Designation"; // affected record
 
-                $get_record_id = "select * from emp_designation where agencyid='$agencyid'";
-                $get_record_smtmt = sqlsrv_query($conn, $get_record_id);
-                $record_row = sqlsrv_fetch_array($get_record_smtmt);
-
-                $record_id = $record_row['id']; //record id
+                $record_id = $_GET['id']; //record id
                 $action_type = 6; //6 is update , 5 is data entry
 
 

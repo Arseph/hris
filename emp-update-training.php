@@ -2,50 +2,36 @@
 session_start();
 include "scripts\connect.php";
 include "layouts\layout_sidebar.php";
+include "scripts\kick.php";
 //error_reporting(E_ALL ^ E_NOTICE);
+$id = $_GET['id'];
+$uid = $_GET['uid'];
+
+//gather data
+$getdata_sql = "select * from emp_training where id = '$id'";
+$getdata_stmt = sqlsrv_query($conn, $getdata_sql);
+
+$data_row = sqlsrv_fetch_array($getdata_stmt);
+
+$title = $data_row['title'];
+$from_date = $data_row['from_date'];
+$to_date = $data_row['to_date'];
+$hours = $data_row['hour_num'];
+$sponsor = $data_row['conduct_sponsor'];
+$ld_type = $data_row['ld_type'];
 ?>
 
-<?php
 
-$uid=$_GET['uid']; // get link value
-
-$sql = "select top 1 * from emp_basic where agencyid='$uid' order by id desc";
-
-if($result = sqlsrv_query($conn, $sql))
-{
-  while($row = sqlsrv_fetch_array($result))
-  {
-    $agencyid = $row['agencyid'];
-    $imagepath = $row['imagepath'];
-    $surname = $row['surname'];
-    $surname = utf8_encode($surname);
-    $suffix = $row ['suffix'];
-    $fname = $row ['firstname'];
-    $mname = $row ['middlename'];
-    $dob = $row ['dob'];
-    $pob = $row ['pob'];
-    $gender = $row ['gender'];
-    $civil = $row ['civil'];
-    $citizenship = $row ['citizenship'];
-    $citizenshipby = $row ['citizenshipby'];
-    $cid = $row ['cid'];
-    $height = $row ['height'];
-    $weight = $row ['weightt'];
-    $bloodtype = $row ['bloodtype'];
-  }
-
-}
-
-?>
 
   <main id="main" class="main">
 
     <div class="pagetitle">
-      
+      <h1>Update Training Record</h1>
       <nav>
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-          <li class="breadcrumb-item active">Updating Basic info of Employee ID: <?php echo $agencyid; ?></li>
+          <li class="breadcrumb-item"><a href="<?php echo 'emp-training-list.php?uid='.$uid; ?>">Trainings History</a></li>
+          <li class="breadcrumb-item">Update Training Record</li>
         </ol>
       </nav>
     </div><!-- End Page Title -->
@@ -57,247 +43,96 @@ if($result = sqlsrv_query($conn, $sql))
           <div class="card">
             <div class="card-body">
             <div class="card-body">
-              <h5 class="card-title">Update Basic Information Form</h5>
-
-              <?php include "scripts\update-basic-script.php"; ?>
+              <h5 class="card-title"></h5>
+              <?php
+                include "scripts/emp-update-training-script.php";
+              ?>
 
               <!-- General Form Elements -->
               <form action="" method="post"  enctype="multipart/form-data">
 
                 <div class="row mb-3">
-                  <label for="inputNumber" class="col-sm-2 col-form-label">Profile:</label>
-                  <div class="col-sm-10">
-                    
-                    <?php if($imagepath!=""){ echo "<img src='uploads/$imagepath' width='200px' height='200px'>"; } else { echo '<img src="assets/img/personel-logo.jpg" alt="Profile"'; }?>
-
+                  <label for="fileupload" class="col-sm-4 col-form-label">Certificate of Appearance</label>
+                  <div class="col-sm-8" >
+                    <input class="form-control" type="file" id="imagepath" name="imagepath">
                   </div>
                 </div>
 
-                <!-- <div class="row mb-3">
-                  <label for="fileupload" class="col-sm-2 col-form-label">File Upload</label>
-                  <div class="col-sm-10">
-                    <?php echo "Current image: ".$imagepath."<br>"; ?>
-                    <input class="" type="file" id="imagepath" name="imagepath" value="uploads/admin pic.jpg">
+                <div class="row mb-3">
+                  <label for="fileupload" class="col-sm-4 col-form-label">Certificate of Completion/Training</label>
+                  <div class="col-sm-8">
+                    <input class="form-control" type="file" id="imagepath" name="coc">
+                  </div>
+                </div>
 
-                  </div>
-                </div> -->
 
                 <div class="row mb-3">
-                  <label for="surname" class="col-sm-2 col-form-label">Surname</label>
-                  <div class="col-sm-10">
-                    <input required type="text" class="form-control" name="surname" value="<?php  echo $surname; ?>"  onkeydown="return /[a-z, ]/i.test(event.key)"
-    onblur="if (this.value == '') {this.value = '';}"
-    onfocus="if (this.value == '') {this.value = '';}">
+                  <label for="surname" class="col-sm-4 col-form-label">Title of Learning and Development Interventions/Training Programs</label>
+                  <div class="col-sm-8">
+                    <input required type="text" class="form-control" name="title" value="<?php echo $title; ?>">
                   </div>
                 </div>
-                <div class="row mb-3">
-                  <label for="suffix" class="col-sm-2 col-form-label">Suffix</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" name="suffix" value="<?php  echo $suffix; ?>">
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="firstname" class="col-sm-2 col-form-label">Firstname</label>
-                  <div class="col-sm-10">
-                    <input required type="text" class="form-control" name="firstname" name="suffix" value="<?php  echo $fname; ?>" onkeydown="return /[a-z, ]/i.test(event.key)"
-    onblur="if (this.value == '') {this.value = '';}"
-    onfocus="if (this.value == '') {this.value = '';}">
-                  </div>
-                </div>
-                <div class="row mb-3">
-                  <label for="inputNumber" class="col-sm-2 col-form-label">Middle name</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" name="middlename" value="<?php  echo $mname; ?>" onkeydown="return /[a-z, ]/i.test(event.key)"
-    onblur="if (this.value == '') {this.value = '';}"
-    onfocus="if (this.value == '') {this.value = '';}">
-                  </div>
-                </div>
+               
                 
                 <div class="row mb-3">
-                  <label for="dob" class="col-sm-2 col-form-label">Date of Birth</label>
-                  <div required class="col-sm-10">
-                    <input type="date" class="form-control" name="dob" value="<?php echo $dob; ?>" required>
+                  <label for="dob" class="col-sm-4 col-form-label">From</label>
+                  <div required class="col-sm-8">
+                    <input type="date" class="form-control" name="from_date" value="<?php echo $from_date; ?>" required>
                   </div>
                 </div>
 
                 <div class="row mb-3">
-                  <label for="pob" class="col-sm-2 col-form-label">Place of Birth</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control"  name="pob" value="<?php  echo $pob; ?>" required>
+                  <label for="dob" class="col-sm-4 col-form-label">To</label>
+                  <div class="col-sm-8">
+                    <input type="date" class="form-control" name="to_date" value="<?php echo $to_date; ?>" required>
                   </div>
                 </div>
 
-                <fieldset class="row mb-3">
-                  <legend class="col-form-label col-sm-2 pt-0">Gender</legend>
-                  <div class="col-sm-10">
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="radiogender" id="male" value="male" required <?php if($gender=="male"){
-                        echo "checked";
-                      } ?>>
-                      <label class="form-check-label" for="gridRadios1">
-                        Male
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input class="form-check-input" type="radio" name="radiogender" id="female" required value="female"<?php if($gender=="female"){
-                        echo "checked";
-                      } ?>>
-                      <label class="form-check-label" for="gridRadios2">
-                        Female
-                      </label>
-                    </div>
-                  </div>
-                </fieldset>
+                <div class="row mb-3">
+                  
+                  <label for="dob" class="col-sm-4 col-form-label">Number of Hours</label>
 
-                <fieldset class="row mb-3">
-                  <legend class="col-form-label col-sm-2 pt-0">Civil Status</legend>
-                  <div class="col-sm-10">
-                    <div class="form-check">
-                      <input  required class="form-check-input" type="radio" name="radiocivil" id="single" value="single" 
-                      <?php if($civil=="single"){
-                        echo "checked";
-                      } ?>
-                      >
-                      <label class="form-check-label" for="radiocivil">
-                        Single
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input required class="form-check-input" type="radio" name="radiocivil" id="married" value="married" <?php if($civil=="married"){
-                        echo "checked";
-                      } ?>>
-                      <label required class="form-check-label" for="radiocivil">
-                        Married
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input required class="form-check-input" type="radio" name="radiocivil" id="widowed" value="widowed" <?php if($civil=="widowed"){
-                        echo "checked";
-                      } ?>>
-                      <label class="form-check-label" for="radiocivil">
-                        Widowed
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input required class="form-check-input" type="radio" name="radiocivil" id="separated" value="separated" <?php if($civil=="separated"){
-                        echo "checked";
-                      } ?>>
-                      <label class="form-check-label" for="radiocivil">
-                        Separated
-                      </label>
-                    </div>
+                  <div class="col-sm-8">
+                    <input type='number' name='hours' class='form-control' value="<?php echo $hours; ?>" required>
                   </div>
-                </fieldset>
-
-                <fieldset class="row mb-3">
-                  <legend class="col-form-label col-sm-2 pt-0">Citizenship</legend>
-                  <div class="col-sm-10">
-                    <div class="form-check">
-                      <input required class="form-check-input" type="radio" name="radiocitizen" id="filipino" value="filipino" <?php if($citizenship=="filipino"){
-                        echo "checked";
-                      } ?> onclick="hidedual()">
-                      <label class="form-check-label" for="gridRadios1">
-                        Filipino
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input required class="form-check-input" type="radio" name="radiocitizen" id="dual" value="dual" <?php if($citizenship=="dual"){
-                        echo "checked";
-                      } ?> onclick="showdual()" >
-                      <label class="form-check-label" for="gridRadios2">
-                        Dual
-                      </label>
-                    </div>
-                  </div>
-                </fieldset>
-
+                  
+                </div>
                 
-
-                <div class="row mb-3" id="ciddiv">
-                  <label for="dual" class="col-sm-2 col-form-label" id="cidlabel" 
-                   <?php
-                    if($citizenship == "dual")
-                    {
-                      echo "style='display:block'"; 
-                    }
-                    else {
-                      echo "style='display:none'";
-                    }
-                    ?> >Country if dual</label>
-                  <div class="col-sm-10">
-                    <input type="text" class="form-control" name="cid" id ="cidid" 
-                    value="<?php echo $cid;?>" 
-
-                    <?php
-                    if($citizenship == "dual")
-                    {
-                      echo "style='display:block'"; 
-                    }
-                    else {
-                      echo "style='display:none'";
-                    }
-                    ?>>
-                  </div>
-                </div>
-
-                <fieldset class="row mb-3">
-                  <legend class="col-form-label col-sm-2 pt-0">Citizenship By</legend>
-                  <div class="col-sm-10">
-                    <div class="form-check">
-                      <input required class="form-check-input" type="radio" name="radiocitizenby" id="filipino" value="By Birth" <?php if($citizenshipby=="By Birth"){
-                        echo "checked";
-                      } ?> required>
-                      <label class="form-check-label" for="gridRadios1">
-                        By Birth
-                      </label>
-                    </div>
-                    <div class="form-check">
-                      <input required class="form-check-input" type="radio" name="radiocitizenby" id="dual" value="By Naturalization" <?php if($citizenshipby=="By Naturalization"){
-                        echo "checked";
-                      } ?>required>
-                      <label class="form-check-label" for="gridRadios2">
-                        By Naturalization
-                      </label>
-                    </div>
-                  </div>
-                </fieldset>
+                <br>
 
                 <div class="row mb-3">
-                  <label for="height" class="col-sm-2 col-form-label">Height (Cm)</label>
-                  <div class="col-sm-10">
-                    <input  required type="number" class="form-control" name="height" value="<?php echo $height; ?>">
-                  </div>
-                </div>
+                  
+                  <label for="dob" class="col-sm-4 col-form-label">Learning & Development Type</label>
 
-                <div class="row mb-3">
-                  <label for="weight" class="col-sm-2 col-form-label">Weight (Kg)</label>
-                  <div class="col-sm-10">
-                    <input  required type="number" class="form-control" name="weight" value="<?php echo $weight; ?>">
-                  </div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-sm-2 col-form-label">Blood type</label>
-                  <div class="col-sm-10">
-                    <select required class="form-select" name="bloodtype">
-                      <option selected value="0"> - SELECT - </option>
-                      <option value="A+" <?php if ($bloodtype == "A+"){ echo "selected='selected'"; }?>>A+</option>
-                      <option value="B+" <?php if ($bloodtype == "B+"){ echo "selected='selected'"; }?>>B+</option>
-                      <option value="A-" <?php if ($bloodtype == "A-"){ echo "selected='selected'"; }?>>A-</option>
-                      <option value="B-" <?php if ($bloodtype == "B-"){ echo "selected='selected'"; }?>>B-</option>
-                      <option value="AB-" <?php if ($bloodtype == "AB-"){ echo "selected='selected'"; }?>>AB-</option>
-                      <option value="AB+" <?php if ($bloodtype == "AB+"){ echo "selected='selected'"; }?>>AB+</option>
-                      <option value="O+" <?php if ($bloodtype == "O+"){ echo "selected='selected'"; }?>>O+</option>
-                      <option value="O-" <?php if ($bloodtype == "O-"){ echo "selected='selected'"; }?>>O-</option>
+                  <div required class="col-sm-8">
+                    <select name='sel_ldtype' class='form-control'>
+                      <option value='0'>- Select -</option>
+                      <option value='1' <?php if($ld_type=='1'){ echo "selected"; }?>>Managerial</option>
+                      <option value='2' <?php if($ld_type=='2'){ echo "selected"; }?>>Supervisory</option>
+                      <option value='3' <?php if($ld_type=='3'){ echo "selected"; }?>>Technical</option>
+                      <option value='4' <?php if($ld_type=='4'){ echo "selected"; }?>>Foundation</option>
                     </select>
                   </div>
                 </div>
+                <br>
 
-               
+                <br>
+
+                <div class="row mb-3">
+                  
+                  <label for="dob" class="col-sm-4 col-form-label">Conducted/Sponsored by</label>
+
+                  <div required class="col-sm-8">
+                    <textarea name='txt_conduct' class='form-control' required><?php echo $sponsor; ?> </textarea>
+                  </div>
+                  <br><br><br>
+
 
                 <div class="text-center">
-                  <div class="col-sm-10">
-                    <button type="submit" name="basicsave" class="btn btn-primary">Update Records</button>
+                  <div class="col-sm-12">
+                    <br>
+                    <button type="submit" name="basicsave" class="btn btn-primary">Update Record</button>
+                    <a class='btn btn-secondary' href="<?php echo 'emp-training-list.php?uid='.$uid; ?>">Cancel</a>
                   </div>
                 </div>
 
@@ -473,10 +308,9 @@ if($result = sqlsrv_query($conn, $sql))
         var hidecid = document.getElementById("cidid");
         var hideciddiv = document.getElementById("ciddiv");
 
-          hidecid.style.display = "block";
-          cidlabel.style.display = "block";
-
-
+        hidecid.style.display = "block";
+        cidlabel.style.display = "block";
+        
     }
 </script>
 

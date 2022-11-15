@@ -13,12 +13,12 @@
 
                 $affected_record = "Volunteer"; // affected record
 
-                $get_record_id = "select * from emp_volunteer where agencyid='$agencyid' and id=''";
+                $get_record_id = "select * from emp_volunteer where agencyid='$agencyid' order by id desc";
                 
-                $get_record_smtmt = sqlsrv_query($conn, $get_record_id);
-                $record_row = sqlsrv_fetch_array($get_record_smtmt);
+                $get_record_stmt = sqlsrv_query($conn, $get_record_id);
+                $record_row = sqlsrv_fetch_array($get_record_stmt);
 
-                $record_id = $_GET['id'];; //record id
+                $record_id = $record_row['id']; //record id
                 $action_type = 5; //6 is update , 5 is data entry
 
 

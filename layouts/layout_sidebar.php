@@ -243,35 +243,32 @@ if (!isset($_SESSION['user_id']))
               <hr class="dropdown-divider">
             </li>
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="profile.php">
-                <i class="bi bi-person"></i>
-                <span>My Profile</span>
-              </a>
-            </li>
+           
             <li>
               <hr class="dropdown-divider">
             </li>
 
-            <li>
+            <!-- <li>
               <a class="dropdown-item d-flex align-items-center" href="account-settings.php">
                 <i class="bi bi-gear"></i>
                 <span>Account Settings</span>
               </a>
             </li>
+
             <li>
               <hr class="dropdown-divider">
-            </li>
-
+            </li> -->
+<!-- 
             <li>
               <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
                 <i class="bi bi-question-circle"></i>
                 <span>Need Help?</span>
               </a>
             </li>
+
             <li>
               <hr class="dropdown-divider">
-            </li>
+            </li> -->
 
             <li>
               <a class="dropdown-item d-flex align-items-center" href="scripts/logout-script.php">
@@ -489,9 +486,12 @@ if (!isset($_SESSION['user_id']))
         </ul>
       </li>
 
+      <!-- employee leaves begin-->
+
+      <!-- 
       <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#charts-nav" data-bs-toggle="collapse" href="#">
-          <!-- <i class="bi bi-bar-chart"></i> -->
+          
           <i class="bi bi-gem"></i>
           <span>Employee Leaves</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
@@ -504,8 +504,35 @@ if (!isset($_SESSION['user_id']))
             <li>
         </ul>
       </li>
-      <!-- End Components Nav -->';
+      -->
+      <!-- Employee leaves end -->';
 
+echo '
+    <!-- employee property begin
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#property-nav" data-bs-toggle="collapse" href="#">
+          <i class="bi bi-gem"></i>
+          <span>Property Manager</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="property-nav" class="nav-content collapse " data-bs-parent="">
+          <li>
+            <a href="#">
+              <i class="bi bi-circle"></i><span>Property Inventory</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="bi bi-circle"></i><span>Property Category</span>
+            </a>
+            <li>
+            <a href="#">
+              <i class="bi bi-circle"></i><span>Property Status</span>
+            </a> 
+        </ul>
+      </li>
+
+      employee property end -->';
 
 
 echo'
@@ -535,6 +562,15 @@ echo'
               <i class="bi bi-circle"></i><span>Programs</span>
             </a>
           </li>
+
+
+          <li>
+            <a href="signatory-list.php">
+              <i class="bi bi-circle"></i><span>Signatories</span>
+            </a>
+          </li>
+
+
           <li>
             <a href="eligibility-type.php">
               <i class="bi bi-circle"></i><span>Eligibility Category</span>
@@ -545,90 +581,10 @@ echo'
               <i class="bi bi-circle"></i><span>Eligibility</span>
             </a>
           </li>
-          <li>
-            <a href="name-extension-list.php">
-              <i class="bi bi-circle"></i><span>Name Extensions</span>
-            </a>
-          </li>
         </ul>
       </li>
 
-
       
-      
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-          
-          <i class="bi bi-layout-text-window-reverse"></i>
-          <span>Date Monitoring</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="tables-general.html">
-              <i class="bi bi-circle"></i><span>Retirement</span>
-            </a>
-          </li>
-          <li>
-            <a href="tables-data.html">
-              <i class="bi bi-circle"></i><span>Loyalty</span>
-            </a>
-          </li>
-          <li>
-            <a href="tables-general.html">
-              <i class="bi bi-circle"></i><span>Step Increment</span>
-            </a>
-          </li>
-        </ul>
-        <!-- original content
-        <li>
-            <a href="tables-general.html">
-              <i class="bi bi-circle"></i><span>Step Increment</span>
-            </a>
-          </li>
-        -->
-      </li><!-- End Tables Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#property-nav" data-bs-toggle="collapse" href="#">
-          <!-- <i class="bi bi-bar-chart"></i> -->
-          <i class="bi bi-gem"></i>
-          <span>Property Monitoring</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="property-nav" class="nav-content collapse " data-bs-parent="">
-          
-
-          <li>
-            <a href="charts-chartjs.html">
-              <i class="bi bi-circle"></i><span>Property Inventory</span>
-            </a>
-          </li>
-          <li>
-            <a href="charts-chartjs.html">
-              <i class="bi bi-circle"></i><span>Property Category</span>
-            </a>
-            <li>
-            <a href="charts-chartjs.html">
-              <i class="bi bi-circle"></i><span>Property Status</span>
-            </a> 
-        <!-- original content
-          <li>
-            <a href="charts-chartjs.html">
-              <i class="bi bi-circle"></i><span>Chart.js</span>
-            </a>
-          </li>
-          <li>
-            <a href="charts-apexcharts.html">
-              <i class="bi bi-circle"></i><span>ApexCharts</span>
-            </a>
-          </li>
-          <li>
-            <a href="charts-echarts.html">
-              <i class="bi bi-circle"></i><span>ECharts</span>
-            </a>
-          </li>
-        -->
-        </ul>
-      </li><!-- End Charts Nav -->
       
       <!-- personnel board
       <li class="nav-item">
@@ -1020,7 +976,7 @@ echo'
 
 
         }else{
-           echo '<a href="add-address.php">
+           echo '<a href="add-address.php?uid='.$agencyid.'">
               <i class="bi bi-circle"></i><span style="color:red;">Add Address</span>
             </a>';
         }
@@ -1032,7 +988,7 @@ echo'
           Update Identification</a>";
 
         }else{
-           echo '<a href="add-identification.php">
+           echo '<a href="add-identification.php?uid='.$agencyid.'">
               <i class="bi bi-circle"></i><span style="color:red;">Add Identification</span>
             </a>';
         }
@@ -1045,7 +1001,7 @@ echo'
           Update Family Information</a>";
 
         }else{
-           echo '<a href="add-family.php">
+           echo '<a href="add-family.php?uid='.$agencyid.'">
               <i class="bi bi-circle"></i><span style="color:red;">Add Family Information</span>
             </a>';
         }
@@ -1053,11 +1009,11 @@ echo'
 
         if($count_misc!=0)
         {
-          echo "<a href='update-misc.php?uid=".$row_misc['agencyid']."'><i class='bi bi-circle'></i>
-          Update Misc Information</a>";
+          echo '<a href="update-misc.php?uid='.$agencyid.'&id='.$row_misc['id'].'">
+          <i class="bi bi-circle"></i>Update Misc Information</a>';
 
         }else{
-           echo '<a href="add-misc.php">
+           echo '<a href="add-misc.php?uid='.$agencyid.'">
               <i class="bi bi-circle"></i><span style="color:red;">Add Misc Information</span>
             </a>';
         }
@@ -1108,17 +1064,20 @@ echo'
             </a>';
         // }
 
-        if($count_eligibility!=0)
-        {
-        echo '<a href="emp-eligibility-list.php?uid='.$agencyid.'">
-              <i class="bi bi-circle"></i><span>Update Eligibility</span>
-            </a>';
-        }
-        else{
+
           echo '<a href="emp-eligibility-list.php?uid='.$agencyid.'">
-              <i class="bi bi-circle"></i><span style="color:red;">Add Eligibility</span>
+              <i class="bi bi-circle"></i><span>View Eligibility List</span>
             </a>';
-        }
+
+
+        echo "<a href='emp-volunteer-list.php?uid=".$agencyid."'>
+              <i class='bi bi-circle'></i>Voluntary Work or Involvement In Civic / Non-Government / People / Voluntary Organizations/s
+            </a>";
+
+        echo "<a href='emp-training-list.php?uid=".$agencyid."'>
+              <i class='bi bi-circle'></i>Training History
+            </a>";
+
         echo'
 
             <!--  <a href="add-hrc.php">
@@ -1318,36 +1277,7 @@ if($leave_elig>0)
  
      
      echo' 
-     <!--- Trainings Attended -->
 
-      <a class="nav-link collapsed" data-bs-target="#trainings-nav" data-bs-toggle="collapse" href="#">
-          <i class="bi bi-journal-text"></i>
-          <span>Trainings</span><i class="bi bi-chevron-down ms-auto"></i>
-      </a>
-      
-      <ul id="trainings-nav" class="nav-content collapse " data-bs-parent="">
-            
-            <li>
-              <a href="emp-add-training.php">
-                <i class="bi bi-circle"></i><span>Add Trainings</span>
-              </a>
-            <li>
-            <li>
-              <a href="#">
-                <i class="bi bi-circle"></i><span>View Training History</span>
-              </a>
-            <li>
-
-
-            </li>
-
-
-      </ul>
-
-
-      
-
-     <!--- trainings end --->
       
       <li class="nav-item">
         <a class="nav-link collapsed" href="pages-contact.php">

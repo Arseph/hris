@@ -17,7 +17,7 @@
 
                 $affected_record = "Secondary Level Education"; // affected record
 
-                $get_record_id = "select * from emp_education_secondary where agencyid='$agencyid'";
+                $get_record_id = "select * from emp_education_secondary where agencyid='$uid' order by id desc";
                 $get_record_smtmt = sqlsrv_query($conn, $get_record_id);
                 $record_row = sqlsrv_fetch_array($get_record_smtmt);
 
